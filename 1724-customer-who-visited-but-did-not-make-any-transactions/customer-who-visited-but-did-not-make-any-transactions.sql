@@ -4,9 +4,10 @@ SELECT
 FROM 
     Visits
 WHERE
-    visit_id NOT IN (
+    visit_id NOT IN 
+    (
         SELECT 
-            visit_id
+            DISTINCT visit_id
         FROM
             transactions
     )
