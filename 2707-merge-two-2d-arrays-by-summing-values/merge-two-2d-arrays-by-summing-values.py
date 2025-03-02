@@ -1,5 +1,7 @@
 class Solution:
     def mergeArrays(self, nums1: List[List[int]], nums2: List[List[int]]) -> List[List[int]]:
+        # TC: O(N)
+        # SC: O(1)
         ans = []
         i, j = 0, 0
         while i < len(nums1) and j < len(nums2):
