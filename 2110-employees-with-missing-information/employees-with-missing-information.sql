@@ -1,14 +1,9 @@
-# Write your MySQL query statement below
-SELECT e.employee_id
-FROM employees e
-LEFT JOIN salaries s ON e.employee_id = s.employee_id
-WHERE s.salary IS NULL
-
-UNION
-
-SELECT s.employee_id
-FROM salaries s
-LEFT JOIN employees e on e.employee_id = s.employee_id
-WHERE e.name IS NULL
-
-ORDER BY employee_id ASC;
+SELECT F.employee_id
+FROM (
+    SELECT * FROM Employees LEFT JOIN Salaries USING(employee_id)
+    UNION
+    SELECT * FROM Employees RIGHT JOIN Salaries USING(employee_id)
+)
+AS F
+WHERE F.salary IS NULL OR F.name IS NULL
+ORDER BY F.employee_id;
