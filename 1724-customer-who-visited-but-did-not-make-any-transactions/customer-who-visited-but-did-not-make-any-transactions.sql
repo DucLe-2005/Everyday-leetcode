@@ -1,14 +1,7 @@
-SELECT
-    customer_id,
-    COUNT(visit_id) AS count_no_trans
-FROM 
-    Visits
-WHERE
-    visit_id NOT IN 
-    (
-        SELECT 
-            DISTINCT visit_id
-        FROM
-            transactions
-    )
-GROUP BY customer_id;
+select v.customer_id as customer_id, count(*) as count_no_trans
+from visits v
+where v.visit_id NOT IN (
+    select visit_id
+    from transactions
+)
+group by customer_id;
