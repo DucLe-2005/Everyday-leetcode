@@ -1,5 +1,9 @@
 class Solution {
     public int numKLenSubstrNoRepeats(String s, int k) {
+        if (k > 26 || k < 1 || s.length() < k) {
+            return 0;
+        }
+
         HashSet<Character> charSet = new HashSet<>();
         int ans = 0;
         int left = 0;
