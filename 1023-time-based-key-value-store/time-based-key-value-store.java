@@ -1,6 +1,4 @@
-import java.util.*;
-
-public class TimeMap {
+class TimeMap {
 
     private Map<String, List<Pair>> store;
 
