@@ -1,36 +1,39 @@
 class Solution:
     def minWindow(self, s: str, t: str) -> str:
-        if t == "": return 0
+        if t == "":
+            return ""
 
-        window, mapT = {}, {}
-        for c in t:
-            mapT[c] = 1 + mapT.get(c, 0)
+        window = {}
+        hashMapT = {}
+        for i in t:
+            hashMapT[i] = hashMapT.get(i, 0) + 1
         
-        have, need = 0, len(mapT)
         l = 0
-        res = [l, 1]
-        resLen = float("inf")
-        for r in range(len(s)):
-            c = s[r]
-            window[c] = 1 + window.get(c, 0)
+        res = [-1, -1]
+        have = 0
+        need = len(hashMapT)
+        minLength = float("inf")
 
-            if c in mapT and window[c] == mapT[c]:
+        for r in range(len(s)):
+            char = s[r]
+            window[char] = window.get(char, 0) + 1
+
+            if char in hashMapT and window[char] == hashMapT[char]:
                 have += 1
-            
+
             while have == need:
-                # update the result
-                if (r - l + 1) < resLen:
+                windowLength =  r - l + 1
+                if windowLength < minLength:
                     res = [l, r]
-                    resLen = (r - l + 1)
-                # pop from the left of window
-                window[s[l]] -= 1
-                if s[l] in mapT and window[s[l]] < mapT[s[l]]:
+                    minLength = windowLength
+                
+                leftChar = s[l]
+                window[leftChar] -= 1
+                if leftChar in hashMapT and window[leftChar] < hashMapT[leftChar]:
                     have -= 1
                 l += 1
-
+        
         l, r = res
-        return s[l:r+1] if resLen != float("inf") else ""
+        return s[l : r+1] if minLength != float("inf") else ""
 
-
-
-                
+         
