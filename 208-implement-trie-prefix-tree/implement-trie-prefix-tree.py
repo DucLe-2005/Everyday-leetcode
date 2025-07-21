@@ -1,6 +1,6 @@
 class TrieNode:
     def __init__(self):
-        self.children = {}  # key: character, value: TrieNode()
+        self.children: [str, TrieNode()] = {}
         self.is_end = False
 
 class Trie:
