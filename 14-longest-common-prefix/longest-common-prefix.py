@@ -5,7 +5,7 @@ class Solution:
             return ""
 
         min_len = min(len(x) for x in strs)
-        low = 0
+        low = 1
         high = min_len
         while low <= high:
             middle = (low + high) // 2
