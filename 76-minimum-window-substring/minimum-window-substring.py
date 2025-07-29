@@ -3,37 +3,31 @@ class Solution:
         if t == "":
             return ""
 
-        window = {}
-        hashMapT = {}
-        for i in t:
-            hashMapT[i] = hashMapT.get(i, 0) + 1
-        
-        l = 0
-        res = [-1, -1]
+        sCount, tCount = {}, {}
+        for c in t:
+            tCount[c] = tCount.get(c, 0) + 1
+
         have = 0
-        need = len(hashMapT)
-        minLength = float("inf")
+        need = len(tCount)
+        res = ""
+        min_len = float("inf")
+        l = 0 
+        for r in range(len(s)):  # sliding windows to find the min substring that includes every char in t
+            sCount[s[r]] = sCount.get(s[r], 0) + 1
 
-        for r in range(len(s)):
-            char = s[r]
-            window[char] = window.get(char, 0) + 1
-
-            if char in hashMapT and window[char] == hashMapT[char]:
+            if s[r] in tCount and sCount[s[r]] == tCount[s[r]]:
                 have += 1
 
             while have == need:
-                windowLength =  r - l + 1
-                if windowLength < minLength:
-                    res = [l, r]
-                    minLength = windowLength
-                
-                leftChar = s[l]
-                window[leftChar] -= 1
-                if leftChar in hashMapT and window[leftChar] < hashMapT[leftChar]:
-                    have -= 1
-                l += 1
-        
-        l, r = res
-        return s[l : r+1] if minLength != float("inf") else ""
+                if (r - l + 1) < min_len:
+                    res = s[l: r + 1]
+                    min_len = r - l + 1
 
-         
+
+                sCount[s[l]] -= 1
+                if s[l] in tCount and sCount[s[l]] < tCount[s[l]]:
+                    have -= 1
+                
+                l += 1
+            
+        return res
