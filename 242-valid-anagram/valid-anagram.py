@@ -3,16 +3,16 @@ class Solution:
         char_count_1 = {}
         char_count_2 = {}
 
-        for num in s:
-            if num in char_count_1:
-                char_count_1[num] += 1
+        for c in s:
+            if c in char_count_1:
+                char_count_1[c] += 1
             else:
-                char_count_1[num] = 1
+                char_count_1[c] = 1
         
-        for num in t:
-            if num in char_count_2:
-                char_count_2[num] += 1
+        for c in t:
+            if c in char_count_2:
+                char_count_2[c] += 1
             else:
-                char_count_2[num] = 1
-        
+                char_count_2[c] = 1
+
         return char_count_1 == char_count_2
