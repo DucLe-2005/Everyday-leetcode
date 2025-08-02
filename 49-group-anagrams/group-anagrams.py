@@ -3,11 +3,7 @@ class Solution:
         res = defaultdict(list)  # mapping char count to string
 
         for s in strs:
-            count = [0] * 26
-
-            for c in s:
-                count[ord(c) - ord('a')] += 1
-            
-            res[tuple(count)].append(s)
+            key = ''.join(sorted(s))
+            res[key].append(s)
         
-        return [value for value in res.values()]
+        return list(res.values())
