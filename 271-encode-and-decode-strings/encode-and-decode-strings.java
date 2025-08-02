@@ -2,12 +2,14 @@ public class Codec {
 
     // Encodes a list of strings to a single string.
     public String encode(List<String> strs) {
-        String res = "";
+        StringBuilder res = new StringBuilder();
         for (String s : strs) {
-            res += s.length() + "#" + s;
+            res.append(s.length());
+            res.append('#');
+            res.append(s);
         }
 
-        return res;
+        return res.toString();
     }
 
     // Decodes a single string to a list of strings.
