@@ -14,3 +14,6 @@ class Solution:
         
         backtrack([], 1)
         return res
+    
+    # time complexity: O(k * c(n, k))
+    # space complexity: O()
