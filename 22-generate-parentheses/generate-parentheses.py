@@ -1,22 +1,17 @@
 class Solution:
     def generateParenthesis(self, n: int) -> List[str]:
         res = []
-        stack = []
 
-        def backtrack(openN: int, closeN: int):
+        def backtrack(s: str = '', openN: int = 0, closeN: int = 0):
             if openN == closeN == n:
-                res.append("".join(stack))
+                res.append(s)
                 return
             
             if openN < n:
-                stack.append("(")
-                backtrack(openN + 1, closeN)
-                stack.pop()
+                backtrack(s + "(", openN + 1, closeN)
             
             if closeN < openN:
-                stack.append(")")
-                backtrack(openN, closeN + 1)
-                stack.pop()
-
-        backtrack(0, 0)
+                backtrack(s + ")", openN, closeN + 1)
+            
+        backtrack()
         return res
