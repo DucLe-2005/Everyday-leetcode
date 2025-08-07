@@ -1,20 +1,28 @@
 class Solution:
     def subsets(self, nums: List[int]) -> List[List[int]]:
-        res = [[]]
-        n = len(nums)
+        res = []
+        cur = []
 
-        def backtrack(subset, start):
-            if start == n:
+        def dfs(i):
+            if i == len(nums):
+                res.append(cur[:])
                 return
             
-            for i in range(start, n):
-                subset.append(nums[i])
-                res.append(subset.copy())
-                backtrack(subset, i + 1)
-                subset.pop()
+            # include nums[i]
+            cur.append(nums[i])
+            dfs(i + 1)
+
+            # exclude nums[i]
+            cur.pop()
+            dfs(i + 1)
+
+        dfs(0)
         
-        backtrack([], 0)
         return res
+
+
+
+        
     
-    # time complexity: O(k * 2^n)
-    # space complexity: 
+    # time complexity: O(n * 2^n)
+    # space complexity: O(n *2^n) total, O(n) stack
