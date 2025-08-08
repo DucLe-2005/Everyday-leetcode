@@ -6,16 +6,20 @@ class Solution:
 
         for r in range(9):
             for c in range(9):
-                if board[r][c] == ".":
+                d = board[r][c]
+
+                if d == ".":
                     continue
-                
-                if (board[r][c] in cols[c] or
-                    board[r][c] in rows[r] or
-                    board[r][c] in squares[(r // 3, c // 3)]):
+
+                if (
+                    d in cols[c] or
+                    d in rows[r] or
+                    d in squares[(r // 3, c // 3)]
+                ):
                     return False
-                
-                cols[c].add(board[r][c])
-                rows[r].add(board[r][c])
-                squares[(r // 3, c // 3)].add(board[r][c])
+
+                cols[c].add(d)
+                rows[r].add(d)
+                squares[(r // 3, c // 3)].add(d)
 
         return True
