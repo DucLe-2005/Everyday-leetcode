@@ -23,3 +23,6 @@ class Solution:
                 squares[(r // 3, c // 3)].add(d)
 
         return True
+
+    # time complexity: O(1)
+    # space complexity: O(1)
