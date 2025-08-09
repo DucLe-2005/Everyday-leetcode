@@ -19,8 +19,8 @@ class Solution:
                 a += 1
             right -= 1
 
-            if not left < right or not top < bottom:
-                break
+            # if not left < right or not top < bottom:
+            #     break
 
             # add numbers to the bottom row from right to left
             for i in range(right - 1, left - 1, -1):
