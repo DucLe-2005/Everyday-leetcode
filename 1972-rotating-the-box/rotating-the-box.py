@@ -23,7 +23,7 @@ class Solution:
                     res[lowest_empty][c] = "#"
                     lowest_empty -= 1
 
-                if res[i][c] == "*":  # if obstacle is foun, move lowest_empty to bove it
+                if res[i][c] == "*":  # if obstacle is found, move lowest_empty to bove it
                     lowest_empty = i - 1
 
         return res
