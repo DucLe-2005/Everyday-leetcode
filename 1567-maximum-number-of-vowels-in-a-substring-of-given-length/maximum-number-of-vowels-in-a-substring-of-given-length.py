@@ -1,29 +1,26 @@
 class Solution:
     def maxVowels(self, s: str, k: int) -> int:
-        # hashmap to store the vowel count of each substring
-        # slide window to check each substring
-        curCount = 0
-        maxCount = 0
-        vowels = "aeiou"
-
-        for i in range(k):
-            if s[i] in vowels:
-                curCount += 1
-
-        maxCount = curCount
-        l = 0
-        r = k
-        while r < len(s):
-            # slide the right pointer by 1
-            if s[r] in vowels:
-                curCount += 1
-            
-            # slide the left pointer by 1
-            if s[l] in vowels:
-                curCount -= 1
-            
-            maxCount = max(curCount, maxCount)
-            l += 1
-            r += 1
+        # curSum = current sum of the 
+        # if curSum > maxSum => update maxSum
+        # move left pointer and right pointer
+        vowels = ['a', 'e', 'i', 'o', 'u']
+        curSum = 0
+        maxSum = 0
+        for i in s[0:k]:
+            if i in vowels:
+                curSum += 1
         
-        return maxCount
+        maxSum = curSum
+        for i in range(k, len(s)):
+            if s[i] in vowels:
+                curSum += 1
+            
+            if s[i-k] in vowels:
+                curSum -= 1
+            
+            maxSum = max(maxSum, curSum)
+        
+        return maxSum
+    
+
+
