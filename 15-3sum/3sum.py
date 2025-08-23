@@ -3,22 +3,22 @@ class Solution:
         res = []
         nums.sort()
 
-        for i, a in enumerate(nums):
-            if i > 0 and a == nums[i - 1]:
+        for i in range(len(nums)):
+            if i > 0 and nums[i] == nums[i-1]:  # for the 1st element, only choose unique numbers
                 continue
             
-            l, r = i + 1, len(nums) - 1
+            l, r = i + 1, len(nums) - 1 # binary search to find pairs that when adding to the 1st element, the sum is 0
             while l < r:
-                curSum = a + nums[l] + nums[r]
+                three_sum = nums[i] + nums[l] + nums[r]
 
-                if curSum > 0:
+                if three_sum > 0:
                     r -= 1
-                elif curSum < 0:
+                elif three_sum < 0:
                     l += 1
                 else:
-                    res.append([a, nums[l], nums[r]])
+                    res.append([nums[i], nums[l], nums[r]])
                     l += 1
-                    while l < r and nums[l] == nums[l - 1]:
+                    while l < r and nums[l] == nums[l-1]:  # moves the left pointer until there is no duplicate
                         l += 1
-                
+        
         return res
