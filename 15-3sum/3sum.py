@@ -4,10 +4,10 @@ class Solution:
         nums.sort()
 
         for i in range(len(nums)):
-            if i > 0 and nums[i] == nums[i-1]:  # for the 1st element, only choose unique numbers
+            if i > 0 and nums[i] == nums[i-1]:  # skip repeated numbers
                 continue
             
-            l, r = i + 1, len(nums) - 1 # binary search to find pairs that when adding to the 1st element, the sum is 0
+            l, r = i+1, len(nums) - 1
             while l < r:
                 three_sum = nums[i] + nums[l] + nums[r]
 
@@ -17,8 +17,8 @@ class Solution:
                     l += 1
                 else:
                     res.append([nums[i], nums[l], nums[r]])
-                    l += 1
-                    while l < r and nums[l] == nums[l-1]:  # moves the left pointer until there is no duplicate
-                        l += 1
-        
+                    r -= 1
+                    while l < r and nums[r] == nums[r+1]:
+                        r -= 1
+            
         return res
