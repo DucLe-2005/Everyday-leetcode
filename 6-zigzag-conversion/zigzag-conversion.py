@@ -1,19 +1,20 @@
 class Solution:
     def convert(self, s: str, numRows: int) -> str:
-        if numRows == 1:
+        if len(s) <= numRows:
             return s
-
-        rows = [[] for _ in range(numRows)]
-        step = 1  # 1: move down, -1: move up
+        
+        res = [[] for _ in range(numRows)]
+        step = 1
         idx = 0
 
-        for char in s:
-            print(idx)
-            rows[idx].append(char)
-            if idx == 0:
-                step = 1  # bounce to go down
-            if idx == numRows - 1:
-                step = -1  # bounce to go up
-            idx += step
+        for i in range(len(s)):
+            res[idx].append(s[i])
 
-        return "".join("".join(row) for row in rows)
+            if idx + step == numRows:
+                step = -1
+            elif idx + step < 0:
+                step = 1
+            
+            idx += step
+        
+        return "".join(["".join(x) for x in res])
