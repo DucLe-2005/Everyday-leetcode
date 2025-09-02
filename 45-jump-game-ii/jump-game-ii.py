@@ -3,19 +3,16 @@ class Solution:
         n = len(nums)
         if n == 1:
             return 0
+        
+        farthest = nums[0]
+        current_end = nums[0]
+        jumps = 1
 
-        current_end = 0
-        farthest = 0
-        jumps = 0
-
-        for i in range(n - 1):  # don't make another jump at the last index
-            farthest = max(farthest, i + nums[i])
+        for i in range(len(nums) - 1):
+            farthest = max(farthest, nums[i] + i)
+            
             if i == current_end:
                 current_end = farthest
                 jumps += 1
-            
-            if current_end == n - 1:
-                break
-            
+        
         return jumps
-
