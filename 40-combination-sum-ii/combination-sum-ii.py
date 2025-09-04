@@ -13,7 +13,11 @@ class Solution:
             
             for j in range(i, len(candidates)):
                 if j > i and candidates[j] == candidates[j-1]:
-                    continue 
+                    continue
+
+                if total + candidates[j] > target:
+                    break
+
                 cur.append(candidates[j])
                 dfs(j + 1, cur, total + candidates[j])
                 cur.pop()
