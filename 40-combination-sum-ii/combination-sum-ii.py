@@ -12,7 +12,7 @@ class Solution:
                 return
             
             for j in range(i, len(candidates)):
-                if j > i and candidates[j] == candidates[j-1]:
+                if j > i and candidates[j] == candidates[j-1]:  # avoid duplication in the same recursion depth
                     continue
 
                 if total + candidates[j] > target:
