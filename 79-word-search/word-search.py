@@ -42,3 +42,6 @@ class Solution:
                         return True
         
         return False
+
+    # time: O(n * m) -> n = grid's size, m = word's length
+    # space: O(1), max recursive stack = O(m)
