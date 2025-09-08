@@ -1,10 +1,10 @@
 class Solution:
     def letterCombinations(self, digits: str) -> List[str]:
-        if not digits:
+        if len(digits) == 0:
             return []
         
         res = []
-        digitMap = {
+        digitsMap = {
             "2": "abc",
             "3": "def",
             "4": "ghi",
@@ -21,13 +21,14 @@ class Solution:
                 res.append("".join(cur))
                 return
             
-            for c in digitMap[digits[i]]:
-                cur.append(c)
+            for d in digitsMap[digits[i]]:
+                cur.append(d)
                 dfs(i + 1)
                 cur.pop()
-
+            
         dfs(0)
         return res
+
 
     # n = len(digits)
     # time complexity: O(4^n)
