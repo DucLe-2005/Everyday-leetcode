@@ -24,8 +24,3 @@ class Solution:
                     max_width = max(max_width, norm_idx + 1)
 
         return max_width
-        
-
-
-
-
