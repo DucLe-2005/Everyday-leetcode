@@ -4,19 +4,16 @@ class Solution:
         if m * n != r * c:
             return mat
         
-        res = [[0] * c for _ in range(r)]
-        i = 0
-        line = []
-        i, j = 0, 0
-        for row in mat:
-            for col in row:
-                if j < c:
-                    res[i][j] = col
-                    j += 1
+        res = [[] for _ in range(r)]
+        row, col = 0, 0
+        for i in range(m):
+            for j in range(n):
+                res[row].append(mat[i][j])
+                col += 1
+                
+                if col == c:  # current row is filled
+                    col = 0
+                    row += 1
         
-                if j == c:
-                    j = 0
-                    i += 1
-
         return res
 
