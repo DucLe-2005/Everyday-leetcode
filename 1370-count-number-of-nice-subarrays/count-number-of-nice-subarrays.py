@@ -1,21 +1,20 @@
 class Solution:
     def numberOfSubarrays(self, nums: List[int], k: int) -> int:
-        # convert nums to 1 = odd and 0 = even
-        d = []
+        # use a hash table to count the sum of odd numbers of subarray ending at at each index
+        # increase the count if 
+            # a) there exists a prefix sum in hash table = k - nums[i]
+            # b)prefix sum at index i = k
+        
+        prefix_sum = defaultdict(int)
+        cur = 0
+        res = 0
         for n in nums:
             if n % 2 != 0:
-                d.append(1)
-            else:
-                d.append(0)
-        
-        res = 0
-        prefixSum = {0 : 1}
-        curSum = 0
-        for i in d:
-            curSum += i
-            diff = curSum - k
-            res += prefixSum.get(diff, 0)
-            prefixSum[curSum] = prefixSum.get(curSum, 0) + 1
-        
-        return res
-       
+                cur += 1
+            if cur == k:
+                res += 1
+            res += prefix_sum[cur - k]
+            prefix_sum[cur] += 1
+
+        return res  
+            
