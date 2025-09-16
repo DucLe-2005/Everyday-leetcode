@@ -4,7 +4,7 @@ class Solution:
         # k = 0 means finding duplicates
         # k > 0 means finding pairs
         # for k = 0, add 1 if val >= 2
-        # for k > 0, add 1 if k - num is in the hash table, make sure not double counting by checking num <  k - num:
+        # for k > 0, add 1 if k - num is in the hash table
 
         d = Counter(nums)
         res = 0
