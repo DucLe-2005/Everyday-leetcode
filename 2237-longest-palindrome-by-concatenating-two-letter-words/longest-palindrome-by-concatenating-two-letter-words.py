@@ -12,7 +12,7 @@ class Solution:
         
         # add them middle value
         for n, val in d.items():
-            if val > 0 and n[0] == n[1]:
+            if val > 0 and n[0] == n[1]:  # both characters of the word must be the same
                 return res + 2
         
         return res
