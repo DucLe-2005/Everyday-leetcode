@@ -1,16 +1,18 @@
 class Solution:
     def longestPalindrome(self, words: List[str]) -> int:
-        wordCount = Counter(words)
+        d = defaultdict(int)
         res = 0
-        palindrome_in_middle = 0
-        for w, freq in wordCount.items():
-            s = w[::-1]
-            if s == w:  # word is palindrome itself
-                if freq % 2 == 0:  # if frequency is even, add them to both sides
-                    res += freq * 2 
-                else:  # if frequency is odd, add one palindrome in the middle
-                    res += (freq - 1) * 2
-                    palindrome_in_middle = 1
-            elif w < s and s in wordCount:
-                res += min(freq, wordCount[s]) * 4
-        return res + palindrome_in_middle * 2
+        for w in words:
+            reverse = w[::-1]
+            if reverse in d and d[reverse] > 0:  # if the palindrome of the word exists, add to result
+                d[reverse] -= 1
+                res += 4
+            else:
+                d[w] += 1
+        
+        # add them middle value
+        for n, val in d.items():
+            if val > 0 and n[0] == n[1]:
+                return res + 2
+        
+        return res
