@@ -1,36 +1,34 @@
 class Solution:
     def findOrder(self, numCourses: int, prerequisites: List[List[int]]) -> List[int]:
-        prevMap = {i: [] for i in range(numCourses)}
-        for crs, pre in prerequisites:
-            prevMap[crs].append(pre)
+       # Build graph: pre -> course
+        graph = defaultdict(list)
+        for course, pre in prerequisites:
+            graph[pre].append(course)
+        
+        color = [0] * numCourses  # 0=unvisited, 1=visiting, 2=done
+        order = []               # post order
 
-        visit = set()  # all courses along the current dfs course path
-        added = set()  # courses added to the result
-        res = []
-        def dfs(crs):
-            if crs in visit:
+        def dfs(u):
+            if color[u] == 1:    # cycle
                 return False
-            if prevMap[crs] == []:
-                if crs not in added:
-                    res.append(crs)
-                    added.add(crs)
+            if color[u] == 2:    # already processed
                 return True
             
-            visit.add(crs)
-            for pre in prevMap[crs]:
-                if not dfs(pre):
+
+            color[u] = 1
+            for v in graph[u]:
+                if not dfs(v):
                     return False
-            visit.remove(crs)
-            prevMap[crs] = []
 
-            if crs not in added:
-                res.append(crs)
-                added.add(crs)
-
+            color[u] = 2
+            order.append(u)
             return True
-            
-        for crs in prevMap:
-            if not dfs(crs):
-                return []
         
-        return res
+        for u in range(numCourses):
+            if color[u] == 0:
+                if not dfs(u):
+                    return []
+
+        return order[::-1]
+
+       
