@@ -25,16 +25,15 @@ class Solution:
                 for dr, dc in directions:
                     nr, nc = r + dr, c + dc
                     
-                    if nr in range(m) and nc in range(n) and (nr, nc) not in seen:
+                    if 0 <= nr < m and 0 <= nc < n and (nr, nc) not in seen:
                         if grid[nr][nc] == '*':
                             return length + 1
                         elif grid[nr][nc] == 'O':
                             q.append((nr, nc))
                             seen.add((nr, nc))
             
-            if q:
-                length += 1
-        
+            length += 1
+            
         return -1
 
 
