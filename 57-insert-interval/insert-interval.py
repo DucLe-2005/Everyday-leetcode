@@ -1,24 +1,31 @@
 class Solution:
     def insert(self, intervals: List[List[int]], newInterval: List[int]) -> List[List[int]]:
+        # traverse the intervals array
+        # keep a res array
+        # newInterval < current interval: add the newInterval and add current interval to res
+        # newInterval > current interval: ad the current interval to res
+        # newInterval overlaps with the current interval: start = min(s1, s2), end = max(e1, e2)
+        # edge case: add newInterval if haven't
+
         res = []
-        s, e = newInterval
         inserted = False
-        for start, end in intervals:
-            if end < s:
-                # current interval ends before newInterval starts
-                res.append([start, end])
-            elif start > e:
-                # current interval starts after newInterval ends
+        s2, e2 = newInterval
+        for s1, e1 in intervals:
+            # newInterval before
+            if e2 < s1:
                 if not inserted:
-                    res.append([s, e])
+                    res.append([s2, e2])  
                     inserted = True
-                res.append([start, end])
+                res.append([s1, e1])
+            # newInterval after
+            elif s2 > e1:
+                res.append([s1, e1])
+            # overlap
             else:
-                # overlap -> merge to [s, e]
-                s = min(start, s)
-                e = max(end, e)
+                s2 = min(s1, s2)
+                e2 = max(e1, e2)
         
         if not inserted:
-            res.append([s, e])
-            
+            res.append([s2, e2])
+        
         return res
