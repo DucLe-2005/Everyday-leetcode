@@ -13,10 +13,9 @@ class Solution:
             if start_times[s] < end_times[e]:
                 s += 1
                 rooms += 1
+                res = max(res, rooms)
             else:
                 e += 1
                 rooms -= 1
             
-            res = max(res, rooms)
-        
         return res
