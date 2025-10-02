@@ -1,7 +1,11 @@
 class Solution:
     def minMeetingRooms(self, intervals: List[List[int]]) -> int:
-        start_times = [i[0] for i in intervals]
-        end_times = [i[1] for i in intervals]
+        start_times = []
+        end_times = []
+        for i in intervals:
+            start_times.append(i[0])
+            end_times.append(i[1])
+            
         start_times.sort()
         end_times.sort()
         rooms = 0
