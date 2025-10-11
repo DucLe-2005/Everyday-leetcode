@@ -1,24 +1,28 @@
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, val=0, next=None):
+#         self.val = val
+#         self.next = next
 class Solution:
     def oddEvenList(self, head: Optional[ListNode]) -> Optional[ListNode]:
-        if not head:
-            return None
-        if not head.next:
+        if not head or not head.next:
             return head
-        cur_node = head
-        even_list = ListNode()
-        tail = even_list
-        while cur_node.next:
-            ## move cur_node.next to even_list
-            moveToTheEnd(tail, cur_node, cur_node.next)
-            tail = tail.next
-            if cur_node.next:
-                cur_node = cur_node.next
-        cur_node.next = even_list.next
-        return head
+        
+        evenStart = head.next
+        odd, even = head, head.next
 
-def moveToTheEnd(tail, prev_node, target_node):
-    if target_node == tail:
-        return
-    prev_node.next = prev_node.next.next
-    tail.next = target_node
-    target_node.next = None
+        while even.next and even.next.next:
+            odd.next = odd.next.next
+            even.next = even.next.next
+            odd = odd.next
+            even = even.next
+        
+        if odd.next.next:
+            odd.next = odd.next.next
+            odd = odd.next
+        
+        even.next = None
+        odd.next = evenStart
+        
+        return head
+        
