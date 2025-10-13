@@ -9,9 +9,18 @@ class Solution:
          
     def pickIndex(self) -> int:
         target = self.prefixSum * random.random()
-        for i, prefixSum in enumerate(self.prefixSums):
-            if target < prefixSum:
-                return i
+        l, r = 0, len(self.prefixSums) - 1
+        while l < r:
+            m = (l + r) // 2
+            if self.prefixSums[m] < target:
+                l = m + 1
+            else:
+                r = m
+        
+        return l
+
+            
+                
 
 
 # Your Solution object will be instantiated and called as such:
