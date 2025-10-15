@@ -3,24 +3,23 @@ class Solution:
         candidates.sort()
         res = []
 
-        def dfs(i, cur, total):
+        def dfs(total, path, start):
             if total == target:
-                res.append(cur[:])
+                res.append(path[:])
                 return
-            
             if total > target:
                 return
             
-            for j in range(i, len(candidates)):
-                if j > i and candidates[j] == candidates[j-1]:  # avoid duplication in the same recursion depth
+            for i in range(start, len(candidates)):
+                if i > start and candidates[i] == candidates[i - 1]:
                     continue
-
-                if total + candidates[j] > target:
-                    break
-
-                cur.append(candidates[j])
-                dfs(j + 1, cur, total + candidates[j])
-                cur.pop()
-
+                
+                path.append(candidates[i])
+                dfs(total + candidates[i], path, i+1)
+                path.pop()
+        
+            return path
+        
         dfs(0, [], 0)
+
         return res
