@@ -1,11 +1,14 @@
 class Solution:
     def canJump(self, nums: List[int]) -> bool:
-        farthest = nums[0]
-        for i in range(len(nums)):
-            if farthest < i:
-                return False
-                
-            farthest = max(farthest, i + nums[i])
-        
+        # within the range of the jump range
+        # choose the landing position that allows you to jump the farthest the next time you jump
 
-        return farthest >= len(nums) - 1 
+        farthest = 0
+        for i in range(len(nums)):
+            if i > farthest:
+                return False
+            
+            farthest = max(farthest, i + nums[i])
+        return True
+        
+            
