@@ -1,14 +1,14 @@
 class Solution:
     def longestPalindrome(self, s: str) -> int:
+        wordCount = Counter(s)
         middle = 0
-        count = Counter(s)
         res = 0
-        
-        for c in count.values():
-            if c % 2 == 0:
-                res += c
+        for letter, count  in wordCount.items():
+            if count % 2 == 0:
+                res += count
             else:
-                res += c - 1
-                middle = 1
+                if not middle:
+                    middle = 1
+                res += count - 1
         
         return res + middle
