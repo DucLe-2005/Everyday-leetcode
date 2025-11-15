@@ -8,8 +8,6 @@ class Solution:
                 tmp = nums[nums[i] - 1]
                 nums[nums[i] - 1] = nums[i]
                 nums[i] = tmp
-
-        print(nums)
         
         res = []
         for i, num in enumerate(nums):
