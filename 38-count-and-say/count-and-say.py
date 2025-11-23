@@ -1,11 +1,5 @@
 class Solution:
     def countAndSay(self, n: int) -> str:
-        # base case: n = 1` -> return "1"
-        # call prev = self.countAndSay(n - 1)
-        # transform the string to RLE
-        # time: O(n * m). m is the longest length of an RLE
-        # space: O(1)
-
         if n == 1:
             return "1"
 
