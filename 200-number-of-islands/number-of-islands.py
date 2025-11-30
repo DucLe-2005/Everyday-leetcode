@@ -3,30 +3,30 @@ class Solution:
         if not grid:
             return 0
         
-        rows, cols = len(grid), len(grid[0])
         visit = set()
+        q = deque()
         islands = 0
 
-        def bfs(r, c):
-            q = collections.deque()
-            visit.add((r, c))
-            q.append((r, c))
+        def bfs():
+            directions = [[0, 1], [0, -1], [1, 0], [-1, 0]]
             while q:
-                row, col = q.popleft()
-                directions = [[1, 0], [-1, 0], [0, -1], [0, 1]]
-                for dr, cr in directions:
-                    r, c = row + dr, col + cr 
-                    if (r in range(rows) and
-                        c in range(cols) and 
-                        (r, c) not in visit and
-                        grid[r][c] == "1"):
-                        q.append((r, c))
-                        visit.add((r, c))
+                x, y = q.popleft()
+                print((x, y))
+                for dx, dy in directions:
+                    nx, ny = x + dx, y + dy
+                    if nx not in range(len(grid)) or ny not in range(len(grid[0])):
+                        continue
+                    if grid[nx][ny] == "1" and (nx, ny) not in visit:
+                        q.append((nx, ny))
+                        visit.add((nx, ny))
+            
         
-        for r in range(rows):
-            for c in range(cols):
-                if grid[r][c] == "1" and (r, c) not in visit:
-                    bfs(r, c)
+        for i in range(len(grid)):
+            for j in range(len(grid[0])):
+                if grid[i][j] == "1" and (i, j) not in visit:
+                    q.append((i, j))
+                    visit.add((i, j))
+                    bfs()
                     islands += 1
         
         return islands
