@@ -1,28 +1,56 @@
 class Solution:
     def validTree(self, n: int, edges: List[List[int]]) -> bool:
-        # create an adjacency list. key: node, values: list of neighbors
-        # create a visit set
-        # if node is already in visit set, then a cycle is detected and it is not a valid tree
+        if n - 1 != len(edges):
+            return False
 
-        adj = {i: [] for i in range(n)}
+        parents = [i for i in range(n)]
+        sizes = [1 for _ in range(n)]
+        
+        # -------- helper functions ---------- #
+        def find(A: int) -> int:
+            # find the root
+            root = A
+            while root != parents[root]:
+                root = parents[root]
 
-        for node1, node2 in edges:
-            adj[node1].append(node2)
-            adj[node2].append(node1)
+            # update the root to all vertices on the path
+            old_root = parents[A]
+            while A != root:
+                old_root = parents[A]
+                parents[A] = root
+                A = old_root
+            
+            return root
 
-        visited = set()
+        def union(A: int, B: int) -> bool:
+            root_A = find(A)
+            root_B = find(B)
 
-
-        def dfs(node, prev):
-            if node in visited:
+            # a cycle is detected because two nodes have the same root
+            if root_A == root_B:
                 return False
             
-            visited.add(node)
+            # ensure that the root of the larger set remains the root
+            if sizes[root_A] < sizes[root_B]:
+                parents[root_A] = root_B
+                sizes[root_A] += sizes[root_B]
+                sizes[root_B] += sizes[root_A]
+            else:
+                parents[root_B] = root_A
+                sizes[root_A] += sizes[root_B]
+                sizes[root_B] += sizes[root_A]
 
-            for neighbor in adj[node]:
-                if neighbor != prev and not dfs(neighbor, node):
-                    return False
-            
             return True
+
+        # ---------- end of helper functions ---------- #
+
+        for A, B in edges:
+            if not union(A, B):
+                return False
         
-        return dfs(0, -1) and len(visited) == n
+        return True
+
+
+
+
+            
