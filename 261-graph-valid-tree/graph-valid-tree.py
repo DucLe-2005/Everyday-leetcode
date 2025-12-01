@@ -34,11 +34,11 @@ class Solution:
             if sizes[root_A] < sizes[root_B]:
                 parents[root_A] = root_B
                 sizes[root_A] += sizes[root_B]
-                sizes[root_B] += sizes[root_A]
+                sizes[root_B] = sizes[root_A]
             else:
                 parents[root_B] = root_A
                 sizes[root_A] += sizes[root_B]
-                sizes[root_B] += sizes[root_A]
+                sizes[root_B] = sizes[root_A]
 
             return True
 
