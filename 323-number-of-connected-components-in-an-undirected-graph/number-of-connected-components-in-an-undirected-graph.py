@@ -1,33 +1,48 @@
 class Solution:
     def countComponents(self, n: int, edges: List[List[int]]) -> int:
-        # create an adjacency table
-        # do a dfs on all neighborsd; add the node to visited node
-        # if the node is already visited, then stop the dfs.
-        # increase count by 1 if a node is not in visited.
+        # time: O(V + )
+        parents = [i for i in range(n)]
+        sizes = [1 for _ in range(n)]
+        component_count = n
 
-        adj = {i: [] for i in range(n)}
-        for n1, n2 in edges:
-            adj[n1].append(n2)
-            adj[n2].append(n1)
-
-        visited = set()  # visited nodes
-        def dfs(i):
-            if i in visited:
-                return
+        # ------- union find functions -------- #
+        def find(A: int) -> int:
+            root = A
+            while root != parents[root]:
+                root = parents[root]
             
-            visited.add(i)
-            for nei in adj[i]:
-                if nei not in visited:
-                    dfs(nei)
+            # update the root for the vertices on the path
+            old_root = parents[A]
+            while A != root:
+                old_root = parents[A]
+                parents[A] = root
+                A = old_root
+            
+            return root
+            
+        def union(A: int, B: int) -> int:
+            root_A = find(A)
+            root_B = find(B)
 
-        count = 0
-        for n in adj:
-            if n not in visited:
-                dfs(n)
-                count += 1
+            # if A and B are already connected, then don't decrease count
+            if root_A == root_B:
+                return 0
+            
+            # ensure the root of the larger set remain the root
+            if sizes[root_A] < sizes[root_B]:
+                parents[root_A] = root_B
+                sizes[root_B] += sizes[root_A]
+                sizes[root_A] = sizes[root_B]
+            else:
+                parents[root_B] = root_A
+                sizes[root_B] += sizes[root_A]
+                sizes[root_A] = sizes[root_B]
+        
+            return 1
+            
+        # ----------- end of union find functions ---------- #
 
-        return count
-
-
-
-
+        for A, B in edges:
+            component_count -= union(A, B)
+        
+        return component_count
