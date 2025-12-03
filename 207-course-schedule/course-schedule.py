@@ -1,41 +1,26 @@
 class Solution:
     def canFinish(self, numCourses: int, prerequisites: List[List[int]]) -> bool:
-        # create an adjcency list
-        # key = course, values: array of prerequisites
-        # run dfs on each prereq
-        # if a course reappears along the path, return False because no circle is allowed
-        # if a course has no prereq, then return True
-        # time: O(n)
-        # space: O(n)
-        if numCourses == 1:
-            return True
+        graph = defaultdict(list)
+        indegree = [0] * numCourses
 
-        # key: course, values: prereqs
-        adj = {i: [] for i in range(numCourses)}
-        for course, prereq in prerequisites:
-            adj[course].append(prereq)
+        for child, parent in prerequisites:
+            graph[parent].append(child)
+            indegree[child] += 1
         
-        visit = set()
-        print(adj)
+        zero_queue = deque()
 
-        def dfs(course):
-            if course in visit:
-                return False
-            if adj[course] == []: # we have traverse this path
-                return True
-
-            visit.add(course)
-            for pre in adj[course]:
-                if not dfs(pre):
-                    return False
-
-            visit.remove(course)
-            adj[course] = []  # the path is fully visited
-            
-            return True
+        for course in range(numCourses):
+            if indegree[course] == 0:
+                zero_queue.append(course)
         
-        for course in adj:
-            if not dfs(course):
-                return False
+        course_taken = 0
+        while zero_queue:
+            course = zero_queue.popleft()
+            course_taken += 1
 
-        return True
+            for child in graph[course]:
+                indegree[child] -= 1
+                if indegree[child] == 0:
+                    zero_queue.append(child)
+        
+        return course_taken == numCourses
