@@ -30,8 +30,6 @@ class Solution:
                 obs_seen = True
                 dp[i][n - 1] = 0
         
-        print(dp)
-        
         for i in range(m - 2, -1, - 1):
             for j in range(n - 2, -1, -1):
                 if obstacleGrid[i][j] != 1:
