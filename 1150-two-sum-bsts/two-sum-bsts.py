@@ -26,13 +26,6 @@ class Solution:
         
         return False
 
-    # def recurse_root_1(self, root: Optional[TreeNode], target: int) -> bool:
-    #     if not root:
-    #         return False
-        
-    #     if self.recurse_root_2(root.val, )
-        
-    
     def recurse_root_2(self, val: int, root: Optional[TreeNode], target: int) -> bool:
         if not root:
             return False
