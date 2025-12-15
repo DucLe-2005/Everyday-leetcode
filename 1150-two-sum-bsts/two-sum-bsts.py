@@ -6,34 +6,28 @@
 #         self.right = right
 class Solution:
     def twoSumBSTs(self, root1: Optional[TreeNode], root2: Optional[TreeNode], target: int) -> bool:
-        # if current node on root1 + current node on root2 < target:
-        # do dfs on root2's right child  
-        # if current node on root1 + current node on root > target:
-        # do dfs on root2's left child
-        # after reaching a leaf node on the second tree and still not find the correct pair:
-        # recursively iterate the next node on the first tree and check recursively the nodes on the second tree
-        # return true if a pair is found
-        # return false at the end if no true is returned
-        if not root1:
-            return False
+        set1, set2 = self.inorder(root1), self.inorder(root2)
         
-        if self.recurse_root_2(root1.val, root2, target):
-            return True
-        if root1.left and self.twoSumBSTs(root1.left, root2, target):
-            return True
-        if root1.right and  self.twoSumBSTs(root1.right, root2, target):
-            return True
-        
+        for num in set1:
+            if (target - num) in set2:
+                return True
+
         return False
+    
+    def inorder(self, root):
+        res = set()
 
-    def recurse_root_2(self, val: int, root: Optional[TreeNode], target: int) -> bool:
-        if not root:
-            return False
-        if val + root.val == target:
-            return True
+        def dfs(node):
+            if not node:
+                return
+            
+            dfs(node.left)
+            res.add(node.val)
+            dfs(node.right)
+
+        dfs(root)
+        return res
+            
+
         
-        if val + root.val < target:
-            return self.recurse_root_2(val, root.right, target)
-        else:
-            return self.recurse_root_2(val, root.left, target)
-
+        
