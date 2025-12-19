@@ -6,24 +6,33 @@ class Solution:
         for t, u, w in visits:
             name_to_websites[u].append(w)
 
-        pattern_map = defaultdict(set)
+        pattern_count = defaultdict(int)
         for name, websites in name_to_websites.items():
             if len(websites) < 3:
                 continue
-            
-            self.recordPattern(pattern_map, name, websites, [], 0)
+
+            seen = set()
+            self.recordPattern(seen, name, websites, [], 0)
+
+            for pat in seen:
+                pattern_count[pat] += 1
         
-        sorted_patterns = sorted(pattern_map.items(), key=lambda x: (-len(x[1]), x[0]))
-        return list(sorted_patterns[0][0])
+        # Pick the highest count; break ties by lexicographically smallest pattern
+        best_pat = None
+        best_cnt = -1
+        for pat, cnt in pattern_count.items():
+            if cnt > best_cnt or (cnt == best_cnt and (best_pat is None or pat < best_pat)):
+                best_pat = pat
+                best_cnt = cnt
+
+        return list(best_pat) if best_pat is not None else []
             
-        
-    def recordPattern(self, pattern_map, name, websites, pattern, index):
+    def recordPattern(self, seen, name, websites, pattern, index):
         if len(pattern) == 3:
-            print("add to pattern_map for", pattern, "for", name)
-            pattern_map[tuple(pattern.copy())].add(name)
+            seen.add(tuple(pattern))
             return
 
         for i in range(index, len(websites)):
             pattern.append(websites[i])
-            self.recordPattern(pattern_map, name, websites, pattern, i + 1)
+            self.recordPattern(seen, name, websites, pattern, i + 1)
             pattern.pop()
