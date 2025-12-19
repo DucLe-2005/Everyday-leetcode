@@ -1,12 +1,9 @@
 class Solution(object):
     def removeDuplicates(self, nums):
-        if len(nums) == 1:
-            return 1
+        val = None
+        k = 0
 
-        val = nums[0]
-        k = 1
-
-        for num in nums[1:]:
+        for num in nums:
             if num != val:
                 val = num
                 nums[k] = num      
