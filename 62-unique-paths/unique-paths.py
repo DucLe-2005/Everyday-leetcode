@@ -10,7 +10,6 @@ class Solution:
         # time: O(m * n), space: O(m * n)
 
         path_sums = [[1 for _ in range(n)] for i in range(m)]
-        print(path_sums)
 
         for i in range(m - 2, -1, -1):
             for j in range(n - 2, -1, -1):
