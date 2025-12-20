@@ -4,16 +4,19 @@ class MovingAverage:
         self.window = deque()
         self.current_size = 0
         self.size = size
+        self.cur_sum = 0
 
     def next(self, val: int) -> float:
         if self.current_size < self.size:
             self.current_size += 1
             self.window.append(val)
+            self.cur_sum += val
         else:
-            self.window.popleft()
+            self.cur_sum -= self.window.popleft()
             self.window.append(val)
+            self.cur_sum += val
         
-        return sum(self.window) / self.current_size
+        return self.cur_sum / self.current_size
 
 
 # Your MovingAverage object will be instantiated and called as such:
