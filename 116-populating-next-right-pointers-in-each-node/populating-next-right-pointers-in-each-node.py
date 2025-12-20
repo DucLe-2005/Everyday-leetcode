@@ -29,7 +29,6 @@ class Solution:
                     q.append(cur.right)
 
                 if prev:
-                    print("prev=", prev, "cur=", cur)
                     prev.next = cur
                 prev = cur
         
