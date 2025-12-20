@@ -5,14 +5,6 @@
 #         self.next = next
 class Solution:
     def partition(self, head: Optional[ListNode], x: int) -> Optional[ListNode]:
-        # p1: points to the node lower than x
-        # p2: points to the node higher than x
-        # h: marks the head of higher partition
-        # curr: iterate each node in linked list
-        # if curr < p1, p1.next = curr
-        # if curr > p2, p2.next = curr
-        # if curr reaches the end, p1.next = h
-
         if not head:
             return None
         
