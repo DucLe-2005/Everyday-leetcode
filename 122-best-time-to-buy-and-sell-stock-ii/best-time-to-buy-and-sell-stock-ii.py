@@ -1,22 +1,20 @@
 class Solution:
     def maxProfit(self, prices: List[int]) -> int:
-        # dfs with memoization
-        # State: buying or selling
+        peak = prices[0]
+        valey = prices[0]
+        i = 0
         n = len(prices)
-        dp = {}
-        def dfs(i, buying):
-            if i == n:
-                return 0
-            if (i, buying) in dp:
-                return dp[(i, buying)]
+        profit = 0
+        while i < n - 1:
+            while i < n - 1 and prices[i] >= prices[i + 1]:
+                i += 1
+            valey = prices[i]
+
+            while i < n - 1 and prices[i] <= prices[i + 1]:
+                i += 1
+            peak = prices[i]
             
-            skip = dfs(i + 1, buying)
-            if buying:
-                profit = max(skip, dfs(i + 1, False) - prices[i])
-            else:
-                profit = max(skip, dfs(i + 1, True) + prices[i])
-            
-            dp[(i, buying)] = profit
-            return dp[(i, buying)]
+            profit += peak - valey
         
-        return dfs(0, buying=True)
+        return profit
+        
