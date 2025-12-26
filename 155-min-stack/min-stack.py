@@ -6,31 +6,13 @@ class MinStack:
 
     def push(self, val: int) -> None:
         self.stack.append(val)
-        
-        tmp = []
-        while self.min_stack and self.min_stack[-1] < val:
-            tmp.append(self.min_stack.pop())
-        self.min_stack.append(val)
-        
-        while tmp:
-            self.min_stack.append(tmp.pop())
+        # Only record the new smaller values
+        if not self.min_stack or self.min_stack[-1] >= val:
+            self.min_stack.append(val)
 
     def pop(self) -> None:
-        pop = self.stack.pop()
-
-        
-        if self.min_stack[-1] == pop:
+        if self.min_stack[-1] == self.stack.pop():
             self.min_stack.pop()
-        else:
-            tmp = []
-            while self.min_stack[-1] != pop:
-                tmp.append(self.min_stack.pop())
-            self.min_stack.pop()
-
-            while tmp:
-                self.min_stack.append(tmp.pop())
-        
-        return pop
 
     def top(self) -> int:
         return self.stack[-1]
