@@ -1,42 +1,31 @@
 class Solution:
     def calculate(self, s: str) -> int:
-        # Add operands to operands and operators to operators stack
-        # when reach a closing parentheses ")", pop from operands and operators n times until reach an opening operands
-        # calculate the current result and push to operands stack
-        return self.evaluate(s, 0)[0]
-        
-
-    
-    def evaluate(self, s, i):
-        val = 0
+        res = 0
+        num = 0
         sign = 1
+        stack = []  # numbers and operators
 
-        while i < len(s) and s[i] != ")":
-            num = 0
-            if s[i] == " ":
-                i += 1
-                continue
-            elif s[i] == "(":
-                res, end = self.evaluate(s, i+1)
-                val += res * sign
-                i = end + 1
-            elif s[i] in "+-":
-                sign = 1 if s[i] == "+" else -1
-                i += 1
-            else:
-                while i < len(s) and s[i] in "0123456789":
-                    num = num * 10 + int(s[i])
-                    i += 1
-                val += num * sign
-        
-        return (val, i)
-
-
-
-
-
-
-
+        for c in s:
+            if c.isdigit():
+                num = num * 10 + int(c)
+            elif c in "+-":
+                res += num * sign
+                sign = 1 if c == "+" else -1
+                num = 0                
+            elif c == "(":
+                stack.append(res)
+                stack.append(sign)
+                res = 0
+                sign = 1
+                num = 0
+            elif c == ")":
+                res += num * sign
+                num = 0
+                s = stack.pop()
+                n = stack.pop()
+                res = n + res * s
+        res += num * sign
+        return res
 
         
         
