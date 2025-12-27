@@ -1,27 +1,18 @@
 class Solution:
     def asteroidCollision(self, asteroids: List[int]) -> List[int]:
-        # pop one asteroids
-        # add array 'tmp'
-        # while asteroids still have asteroids:
-        # pop one asteroid
-        # if popped is positive and the last asteroid in tmp is negative, keep the one with higher val
-        # if popped is negative, add popped to 'tmp'
+        stack = []
+        for a in asteroids:
+            if a < 0:
+                while stack and stack[-1] > 0 and stack[-1] < -a:  # Smaller one explodes
+                    stack.pop()
 
-        res = [asteroids.pop()]
-        while asteroids:
-            pop = asteroids.pop()
-            if pop > 0:
-                while res and res[-1] < 0 and -res[-1] < pop:  # pop smaller ateroids going left
-                    print("f")
-                    res.pop()
-                
-                if res and res[-1] < 0 and -res[-1] == pop:  # two asteroids have the same size
-                    res.pop()
+                if stack and stack[-1] == -a:  # Both are same size
+                    stack.pop()
                     continue
                 
-                if not res or res[-1] > 0:  # Add positive asteroid when no asteroid goes left
-                    res.append(pop)
+                if not stack or stack[-1] < 0:
+                    stack.append(a)
             else:
-                res.append(pop)
+                stack.append(a)
 
-        return res[::-1]
+        return stack
