@@ -1,37 +1,25 @@
 class Solution:
     def calculate(self, s: str) -> int:
-        # iterate s
-        # If the sign is + or -,
-        # get the sign and number and add that number to a stack
-        # If the sign is * or /,
-        # get the next number and last number from the stack to calculate, then push result to stack  
-        # return the sum of all numbers from stack 
-
         stack = []
-        operation = "+"
+        prev_op = "+"
         num = 0
+        n = len(s)
 
-        def perform_operation(stack, num, operation):
-            if operation == "+":
-                stack.append(num)  
-            elif operation == "-":
-                stack.append(-num)  
-            elif operation == "*":
-                stack.append(stack.pop() * num)  
-            else:
-                stack.append(int(stack.pop() / num))
-
-        for c in s:
-            if c == " ":
-                continue
-            elif c.isdigit():
+        for i, c in enumerate(s):
+            if c.isdigit():
                 num = num * 10 + int(c)
-            else:
-                perform_operation(stack, num, operation)
-                operation = c
+            if c in "+-*/" or i == n - 1:
+                if prev_op == "+":
+                    stack.append(num)  
+                elif prev_op == "-":
+                    stack.append(-num)  
+                elif prev_op == "*":
+                    stack.append(stack.pop() * num)  
+                else:
+                    stack.append(int(stack.pop() / num))
+                prev_op = c
                 num = 0
-        
-        perform_operation(stack, num, operation)
+ 
         return sum(stack)
                 
             
