@@ -1,34 +1,37 @@
 class Solution:
     def calculate(self, s: str) -> int:
-        cur_num = 0
+        # iterate s
+        # If the sign is + or -,
+        # get the sign and number and add that number to a stack
+        # If the sign is * or /,
+        # get the next number and last number from the stack to calculate, then push result to stack  
+        # return the sum of all numbers from stack 
+
         stack = []
-        operation = '+'
-        for i in range(len(s)):
-            cur_char = s[i]
-            if cur_char.isdigit():
-                cur_num = cur_num * 10 + int(cur_char)
+        operation = "+"
+        num = 0
+
+        def perform_operation(stack, num, operation):
+            if operation == "+":
+                stack.append(num)  
+            elif operation == "-":
+                stack.append(-num)  
+            elif operation == "*":
+                stack.append(stack.pop() * num)  
+            else:
+                stack.append(int(stack.pop() / num))
+
+        for c in s:
+            if c == " ":
+                continue
+            elif c.isdigit():
+                num = num * 10 + int(c)
+            else:
+                perform_operation(stack, num, operation)
+                operation = c
+                num = 0
+        
+        perform_operation(stack, num, operation)
+        return sum(stack)
+                
             
-            # do the calculation when reached the next operation, white space, or the end of s
-            if not cur_char.isdigit() and not cur_char.isspace() or i == len(s) - 1:
-                if operation == "-":
-                    stack.append(-cur_num)
-                elif operation == "+":
-                    stack.append(cur_num)
-                elif operation == "*":
-                    cur_num = stack.pop() * cur_num
-                    stack.append(cur_num)
-                elif operation == "/":
-                    cur_num = int(stack.pop() / cur_num)  
-                    stack.append(cur_num)
-                operation = s[i]
-                cur_num = 0
-
-        res = 0
-        for n in stack:
-            res += n
-        return res
-
-
-
-
-
