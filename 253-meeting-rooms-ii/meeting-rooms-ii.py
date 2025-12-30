@@ -1,25 +1,31 @@
 class Solution:
     def minMeetingRooms(self, intervals: List[List[int]]) -> int:
-        start_times = []
-        end_times = []
-        for i in intervals:
-            start_times.append(i[0])
-            end_times.append(i[1])
-            
+        # add each interval's start time and end time to start_times and end_times
+        # sort start_times and end_times
+        # iterate start times and end times
+        # if start time < end time: need 1 more room, update rooms_required 
+        # if end time < star time: need 1 less room
+
+        start_times, end_times = [], []
+        for start, end in intervals:
+            start_times.append(start)
+            end_times.append(end)
+        
         start_times.sort()
         end_times.sort()
-        rooms = 0
-        res = 0
-        s, e  = 0, 0
 
-        while s < len(intervals):
-            print(s, e)
+        rooms_req = 0
+        rooms_curr = 0
+        size = len(intervals)
+        s, e = 0, 0
+
+        while s < size:
             if start_times[s] < end_times[e]:
+                rooms_curr += 1
+                rooms_req = max(rooms_req, rooms_curr)
                 s += 1
-                rooms += 1
-                res = max(res, rooms)
             else:
+                rooms_curr -= 1
                 e += 1
-                rooms -= 1
-            
-        return res
+        
+        return rooms_req
