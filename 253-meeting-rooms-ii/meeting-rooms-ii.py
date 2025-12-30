@@ -6,13 +6,8 @@ class Solution:
         # if start time < end time: need 1 more room, update rooms_required 
         # if end time < star time: need 1 less room
 
-        start_times, end_times = [], []
-        for start, end in intervals:
-            start_times.append(start)
-            end_times.append(end)
-        
-        start_times.sort()
-        end_times.sort()
+        start_times = sorted([i[0] for i in intervals])
+        end_times = sorted([i[1] for i in intervals])
 
         rooms_req = 0
         rooms_curr = 0
