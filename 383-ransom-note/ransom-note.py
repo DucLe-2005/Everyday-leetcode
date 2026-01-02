@@ -1,13 +1,13 @@
 class Solution:
     def canConstruct(self, ransomNote: str, magazine: str) -> bool:
-        magazineMap = {}
-        for c in magazine:
-            magazineMap[c] = magazineMap.get(c, 0) + 1
-        
-        for d in ransomNote:
-            if d not in magazineMap or magazineMap[d] == 0:
+        ransom_count = Counter(ransomNote)
+        magazine_count = Counter(magazine)
+
+        for letter in ransom_count:
+            if (
+                letter not in magazine_count or
+                ransom_count[letter] > magazine_count[letter]
+            ):
                 return False
-            else:
-                magazineMap[d] -= 1
         
         return True
