@@ -1,81 +1,92 @@
 class Node:
-    def __init__(self, count: int):
-        self.keys = set()
+    def __init__(self, count):
         self.count = count
-        self.prev, self.next = None, None
+        self.keys = set()
+        self.left = self.right = None
 
-    def add(self, key: str):
+    def add(self, key):
         self.keys.add(key)
 
-    def remove(self, key: str):
+    def remove(self, key):
         self.keys.remove(key)
 
 class AllOne:
+    # head <-> min key <-> key2 <-> key3 <-> ... <-> max key <-> tail
+    # how do I make sure that the linked list is sorted?
 
     def __init__(self):
-        self.countMap = {}  # key -> Node
-        self.left, self.right = Node(0), Node(float("inf"))
-        self.left.next, self.right.prev = self.right, self.left
+        self.count_map = {}
+        self.head, self.tail = Node(0), Node(-1)
+        self.head.right, self.tail.left = self.tail, self.head
 
-    def insert(self, new_node, prev_node):
-        new_node.prev = prev_node
-        new_node.next = prev_node.next
-        prev_node.next.prev = new_node
-        prev_node.next = new_node
+    def insert_right(self, key, prev_node):
+        if prev_node.right.count == prev_node.count + 1:
+            nxt_node = prev_node.right
+            nxt_node.add(key)
+            self.count_map[key] = nxt_node
+        else:
+            new_node = Node(prev_node.count + 1)
+            new_node.add(key)
+            new_node.right, new_node.left = prev_node.right, prev_node
+            prev_node.right.left = new_node
+            prev_node.right = new_node
+            self.count_map[key] = new_node
 
-    def remove(self, node):
-        node.prev.next = node.next
-        node.next.prev = node.prev
+    def insert_left(self, key, prev_node):
+        if prev_node.left.count == prev_node.count - 1:
+            left_node = prev_node.left
+            left_node.add(key)
+            self.count_map[key] = left_node
+        else:
+            new_node = Node(prev_node.count - 1)
+            new_node.add(key)
+            new_node.right, new_node.left = prev_node, prev_node.left
+            prev_node.left.right = new_node
+            prev_node.left = new_node
+            self.count_map[key] = new_node
+    
+    def remove_node(self, node):
+        node.left.right, node.right.left = node.right, node.left
 
     def inc(self, key: str) -> None:
-        if key in self.countMap:
-            node = self.countMap[key]
-            count = node.count + 1
-            next_node = node.next  # Fix: cache before removing node
+        if key in self.count_map:
+            node = self.count_map[key]
             node.remove(key)
+            self.insert_right(key, node)
             if len(node.keys) == 0:
-                self.remove(node)
-                node = node.prev
+                self.remove_node(node)
         else:
-            node = self.left
-            count = 1
-            next_node = self.left.next
-
-        if next_node.count != count:
-            new_node = Node(count)
-            self.insert(new_node, node)
-            next_node = new_node
-        next_node.add(key)
-        self.countMap[key] = next_node
-
+            self.insert_right(key, self.head)
 
     def dec(self, key: str) -> None:
-        node = self.countMap[key]
-        count = node.count - 1
+        node = self.count_map[key]
         node.remove(key)
 
-        if count == 0:
-            del self.countMap[key]
+        if node.count == 1:
+            del self.count_map[key]
         else:
-            prev_node = node.prev
-            if prev_node.count != count:
-                new_node = Node(count)
-                self.insert(new_node, prev_node)
-                prev_node = new_node
-            prev_node.add(key)
-            self.countMap[key] = prev_node
-
+            self.insert_left(key, node)
+            
         if len(node.keys) == 0:
-            self.remove(node)
-
-    def getMinKey(self) -> str:
-        node = self.left.next
-        if node == self.right:
-            return ""
-        return next(iter(node.keys))  # get an arbitrary key
+            self.remove_node(node)
 
     def getMaxKey(self) -> str:
-        node = self.right.prev
-        if node == self.left:
+        if not self.tail.left.keys:
             return ""
-        return next(iter(node.keys))  # get an arbitrary key
+        key = self.tail.left.keys.pop()
+        self.tail.left.add(key)
+        return key
+
+    def getMinKey(self) -> str:
+        if not self.head.right.keys:
+            return ""
+        key = self.head.right.keys.pop()
+        self.head.right.keys.add(key)
+        return key
+        
+# Your AllOne object will be instantiated and called as such:
+# obj = AllOne()
+# obj.inc(key)
+# obj.dec(key)
+# param_3 = obj.getMaxKey()
+# param_4 = obj.getMinKey()
