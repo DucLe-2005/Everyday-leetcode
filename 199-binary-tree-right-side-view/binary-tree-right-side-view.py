@@ -8,16 +8,18 @@ class Solution:
     def rightSideView(self, root: Optional[TreeNode]) -> List[int]:
         if not root:
             return []
+
+        self.res = []
+        q = deque([root])
+        while q:
+            for i in range(len(q)):
+                pop = q.popleft()
+                if i == 0:
+                    self.res.append(pop.val)
+                
+                if pop.right:
+                    q.append(pop.right)
+                if pop.left:
+                    q.append(pop.left)
         
-        res = []
-        def preorder(node, level):
-            if len(res) == level:
-                res.append(node.val)
-            
-            if node.right:
-                preorder(node.right, level + 1)
-            if node.left:
-                preorder(node.left, level + 1)
-            
-        preorder(root, 0)
-        return res
+        return self.res
