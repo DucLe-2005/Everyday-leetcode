@@ -12,7 +12,7 @@ class Solution:
             if not root:
                 return False
             
-            mid = root == p or root == q
+            mid = root.val == p.val or root.val == q.val
             left = dfs(root.left)
             right = dfs(root.right)
 
