@@ -7,21 +7,19 @@
 
 class Solution:
     def lowestCommonAncestor(self, root: 'TreeNode', p: 'TreeNode', q: 'TreeNode') -> 'TreeNode':
-        self.ans = None
-
-        def recurse_tree(node):
-            if not node or self.ans:
+        self.res = root
+        def dfs(root):
+            if not root:
                 return False
             
-            left = recurse_tree(node.left)  # if p/q is in the left subtree
-            right = recurse_tree(node.right)  # if p/q is in the right subtree
+            mid = root == p or root == q
+            left = dfs(root.left)
+            right = dfs(root.right)
 
-            mid = node == p or node == q
-
-            if mid + left + right >= 2:  # LCA found if two flags are true
-                self.ans = node
-            
+            if (left and right) or (mid and left) or (mid and right):
+                self.res = root
+                
             return mid or left or right
-        
-        recurse_tree(root)
-        return self.ans
+
+        dfs(root)
+        return self.res
