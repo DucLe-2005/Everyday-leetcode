@@ -16,7 +16,5 @@ class Solution:
             inorder.append(root.val)
             dfs(root.right)
 
-
         dfs(root)
-        print(inorder)
         return inorder[k-1]
