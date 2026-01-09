@@ -48,7 +48,7 @@ class Codec:
                 self.index += 1
                 return None
             
-            root = TreeNode(int(s[self.index]))
+            root = TreeNode(s[self.index])
             self.index += 1
             root.left = dfs(s)
             root.right = dfs(s)
