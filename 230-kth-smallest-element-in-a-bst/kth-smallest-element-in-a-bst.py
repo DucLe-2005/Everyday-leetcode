@@ -9,7 +9,7 @@ class Solution:
         inorder = []
 
         def dfs(root):
-            if not root:
+            if not root or len(inorder) == k:
                 return
             
             dfs(root.left)
