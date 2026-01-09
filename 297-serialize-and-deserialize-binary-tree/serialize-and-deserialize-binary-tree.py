@@ -27,8 +27,6 @@ class Codec:
                 res.append(str(node.val))
                 q.append(node.left)
                 q.append(node.right)
-
-        print(",".join(res))
         
         return ",".join(res)
                 
@@ -41,7 +39,7 @@ class Codec:
         """
         if not data:
             return None
-            
+
         s = data.split(",")
         size = len(s)
         root = TreeNode(s[0])
