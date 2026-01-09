@@ -6,6 +6,7 @@
 #         self.right = None
 
 class Codec:
+
     def serialize(self, root):
         """Encodes a tree to a single string.
         
@@ -16,20 +17,18 @@ class Codec:
             return ""
 
         res = []
-        q = deque([root])
-        
-        while q:
-            for _ in range(len(q)):
-                node = q.popleft()
-                if not node:
-                    res.append("None")
-                    continue
-                res.append(str(node.val))
-                q.append(node.left)
-                q.append(node.right)
-        
+        def dfs(root):
+            if not root:
+                res.append("None")
+                return
+            
+            res.append(str(root.val))
+            dfs(root.left)
+            dfs(root.right)
+
+        dfs(root)
+        print(",".join(res))
         return ",".join(res)
-                
 
     def deserialize(self, data):
         """Decodes your encoded data to tree.
@@ -39,40 +38,27 @@ class Codec:
         """
         if not data:
             return None
-
+        
         s = data.split(",")
         size = len(s)
-        root = TreeNode(s[0])
-        q = deque([root])
-        idx = 0
+        self.index = 0
 
-        while q:
-            for _ in range(len(q)):
-                node = q.popleft()
-                if not node:
-                    continue
+        def dfs(s):
+            if self.index >= size or s[self.index] == 'None':
+                self.index += 1
+                return None
+            
+            root = TreeNode(int(s[self.index]))
+            self.index += 1
+            root.left = dfs(s)
+            root.right = dfs(s)
 
-                if idx + 1 < size and s[idx + 1] != "None":
-                    node.left = TreeNode(int(s[idx + 1]))
-                else:
-                    node.left = None
-                
-                if idx + 2 < size and s[idx + 2] != "None":
-                    node.right = TreeNode(int(s[idx + 2]))
-                else:
-                    node.right = None
-                
-                q.append(node.left)
-                q.append(node.right)
-
-                idx += 2
-
-                if not root:
-                    root = node
+            return root
         
-        return root
+        return dfs(s)
+        
 
-
+        
 
 # Your Codec object will be instantiated and called as such:
 # ser = Codec()
