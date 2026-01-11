@@ -1,6 +1,6 @@
 class TrieNode:
     def __init__(self):
-        self.children: [str, TrieNode()] = {}
+        self.children = {}
         self.is_end = False
 
 class Trie:
@@ -9,29 +9,28 @@ class Trie:
         self.root = TrieNode()
 
     def insert(self, word: str) -> None:
-        curr = self.root
+        cur = self.root
         for ch in word:
-            if ch not in curr.children:
-                curr.children[ch] = TrieNode()
-            curr = curr.children[ch]
-        curr.is_end = True
+            if ch not in cur.children:
+                cur.children[ch] = TrieNode()
+            cur = cur.children[ch]
+        cur.is_end = True
 
     def search(self, word: str) -> bool:
-        curr = self.root
+        cur = self.root
         for ch in word:
-            if ch not in curr.children:
+            if ch not in cur.children:
                 return False
-            curr = curr.children[ch]
-        return curr.is_end        
+            cur = cur.children[ch]
+        return cur.is_end
 
     def startsWith(self, prefix: str) -> bool:
-        curr = self.root
+        cur = self.root
         for ch in prefix:
-            if ch not in curr.children:
+            if ch not in cur.children:
                 return False
-            curr = curr.children[ch]
+            cur = cur.children[ch]
         return True
-
 
 # Your Trie object will be instantiated and called as such:
 # obj = Trie()
