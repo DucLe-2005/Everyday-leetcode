@@ -17,7 +17,6 @@ class WordDictionary:
         cur.is_end = True
 
     def search(self, word: str) -> bool:
-        print("search", word)
         def dfs(root, i):
             if i == len(word):
                 return root.is_end
