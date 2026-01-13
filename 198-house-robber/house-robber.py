@@ -4,9 +4,6 @@ class Solution:
         # max amount of money I had when at 2 houses back plus this house i
         # max amount of money I had when at the previous house
         # time: O(n), space: O(1)
-        if len(nums) == 1:
-            return nums[0]
-
         amount_1 = 0
         amount_2 = 0
         
