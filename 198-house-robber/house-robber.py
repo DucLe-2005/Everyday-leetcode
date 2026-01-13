@@ -9,7 +9,6 @@ class Solution:
 
         amount_1 = 0
         amount_2 = 0
-        curr = 0
         
         for money in nums:
             curr = max(amount_1, amount_2 + money)
