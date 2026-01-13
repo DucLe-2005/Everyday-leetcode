@@ -13,10 +13,10 @@ class Solution:
 
         two_steps = 1
         one_step = 1
-        curr = 1
         for i in range(n - 2, -1, -1):
             curr = two_steps + one_step
             two_steps = one_step
             one_step = curr
         
-        return curr
+        return one_step
+        
