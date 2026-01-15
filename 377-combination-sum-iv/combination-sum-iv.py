@@ -11,6 +11,8 @@ class Solution:
             
             combinations = 0
             for num in nums:
+                if num > remain:
+                    break
                 combinations += dfs(remain - num)
             
             return combinations
