@@ -6,13 +6,13 @@ class Solution:
         def dfs(remain):
             if remain == 0:
                 return 1
+            if remain < 0:
+                return 0
             
-            result = 0
-            for n in nums:
-                if remain - n < 0:
-                    break
-                result += dfs(remain - n)
+            combinations = 0
+            for num in nums:
+                combinations += dfs(remain - num)
             
-            return result
-        
+            return combinations
+
         return dfs(target)
