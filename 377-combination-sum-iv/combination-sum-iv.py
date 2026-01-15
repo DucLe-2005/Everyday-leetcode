@@ -1,6 +1,6 @@
 class Solution:
     def combinationSum4(self, nums: List[int], target: int) -> int:
-        # nums.sort()
+        nums.sort()
 
         @lru_cache(maxsize=None)
         def dfs(remain):
