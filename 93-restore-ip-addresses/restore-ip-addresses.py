@@ -1,5 +1,8 @@
 class Solution:
     def restoreIpAddresses(self, s: str) -> List[str]:
+        if len(s) > 12:
+            return []
+            
         res = []
         digits = list(s)
         def dfs(i, k, path):
