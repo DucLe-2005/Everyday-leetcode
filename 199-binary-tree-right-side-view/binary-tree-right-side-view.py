@@ -6,45 +6,21 @@
 #         self.right = right
 class Solution:
     def rightSideView(self, root: Optional[TreeNode]) -> List[int]:
-        # BFS
-        # if not root:
-        #     return []
-
-        # self.res = []
-        # q = deque([root])
-        # while q:
-        #     for i in range(len(q)):
-        #         pop = q.popleft()
-        #         if i == 0:
-        #             self.res.append(pop.val)
-                
-        #         if pop.right:
-        #             q.append(pop.right)
-        #         if pop.left:
-        #             q.append(pop.left)
+        if not root:
+            return []
         
-        # return self.res
-
-        # DFS
-        # 1. res = []
-        # dfs(root, level)
-        # if level > len(res): add root to result
-        # 2. recursively traverse root -> right -> left
-        # return res
-
         res = []
-        def dfs(root, level):
-            if not root:
-                return
-            if level > len(res):
-                res.append(root.val)
-            
-            dfs(root.right, level + 1)
-            dfs(root.left, level + 1)
+        q = deque([(root, 0)])
+        while q:
+            node, level = q.popleft()
+            if level == len(res):
+                res.append(node.val)
+            if node.right:
+                q.append((node.right, level+1))
+            if node.left:
+                q.append((node.left, level+1))
 
-        dfs(root, 1)
         return res
-
 
 
 
