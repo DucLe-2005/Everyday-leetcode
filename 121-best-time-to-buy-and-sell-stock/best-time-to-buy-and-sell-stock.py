@@ -4,9 +4,7 @@ class Solution:
         res = 0
 
         for i in range(1, len(prices)):
-            if prices[i] > prices[i-1]:
-                res = max(res, prices[i] - minimum_price)
-            else:
-                minimum_price = min(minimum_price, prices[i])
+            res = max(res, prices[i] - minimum_price)
+            minimum_price = min(minimum_price, prices[i])
         
         return res
