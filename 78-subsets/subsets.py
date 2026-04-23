@@ -5,20 +5,15 @@ class Solution:
 
         def dfs(i):
             if i == len(nums):
-                res.append(cur[:])
+                res.append(cur.copy())
                 return
             
             # include nums[i]
             cur.append(nums[i])
-            dfs(i + 1)
+            dfs(i+1)
 
-            # exclude nums[i]
+            # doesn't include nums[i]
             cur.pop()
-            dfs(i + 1)
-
+            dfs(i+1)
         dfs(0)
-        
-        return res
-        
-    # time complexity: O(n * 2^n)
-    # space complexity: O(n *2^n) total, O(n) stack
+        return res 
