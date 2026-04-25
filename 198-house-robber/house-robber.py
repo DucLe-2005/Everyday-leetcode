@@ -1,15 +1,12 @@
 class Solution:
     def rob(self, nums: List[int]) -> int:
-        # the total amount of money I have when at house i is:
-        # max amount of money I had when at 2 houses back plus this house i
-        # max amount of money I had when at the previous house
-        # time: O(n), space: O(1)
-        amount_1 = 0
-        amount_2 = 0
-        
-        for money in nums:
-            curr = max(amount_1, amount_2 + money)
-            amount_2 = amount_1
-            amount_1 = curr
+        # money1 -> money2 -> curr
+        money1 = 0
+        money2 = 0
 
-        return curr
+        for num in nums:
+            curr_money = max(num + money1, money2)
+            money1 = money2
+            money2 = curr_money
+        
+        return money2
