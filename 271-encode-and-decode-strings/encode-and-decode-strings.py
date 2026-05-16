@@ -15,7 +15,7 @@ class Codec:
         """Decodes a single string to a list of strings.
         """
         if not s:
-            return ""
+            return []
 
         res = []
         i = 0
