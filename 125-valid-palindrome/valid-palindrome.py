@@ -1,21 +1,27 @@
 class Solution:
     def isPalindrome(self, s: str) -> bool:
         l, r = 0, len(s) - 1
+
+        def isAlphaNumeric(c):
+            return (
+                ord('0') <= ord(c) <= ord('9') or
+                ord('a') <= ord(c) <= ord('z') or
+                ord('A') <= ord(c) <= ord('Z')
+            )
         
-        def isAlphaNumberic(c: str):
-            return (ord('A') <= ord(c) <= ord('Z') or
-                    ord('a') <= ord(c) <= ord('z') or 
-                    ord('0') <= ord(c) <= ord('9'))
-
-        while l <= r:
-            if not isAlphaNumberic(s[l]):
+        while l < r:
+            while not isAlphaNumeric(s[l]) and l < r:
                 l += 1
-            elif not isAlphaNumberic(s[r]):
+            
+            while not isAlphaNumeric(s[r]) and l < r:
                 r -= 1
-            elif s[l].lower() != s[r].lower():
+            
+            if s[l].lower() != s[r].lower():
                 return False
-            else:
-                l += 1
-                r -= 1
-
+            
+            l += 1
+            r -= 1
+        
         return True
+
+                
