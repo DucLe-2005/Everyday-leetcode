@@ -1,28 +1,27 @@
 class Solution:
     def isValidSudoku(self, board: List[List[str]]) -> bool:
-        cols = collections.defaultdict(set)
-        rows = collections.defaultdict(set)
-        squares = collections.defaultdict(set)
+        # time: O(1), since size of board is fixed at 9x9
+        # space: O(1)
 
-        for r in range(9):
-            for c in range(9):
-                d = board[r][c]
+        rows = [set() for _ in range(9)]
+        cols = [set() for _ in range(9)]
+        boxes = [set() for _ in range(9)]
 
-                if d == ".":
+        for i in range(9):
+            for j in range(9):
+                if board[i][j] == ".":
                     continue
 
-                if (
-                    d in cols[c] or
-                    d in rows[r] or
-                    d in squares[(r // 3, c // 3)]
-                ):
+                val = board[i][j]
+                box_idx = i // 3 * 3 + j // 3
+
+                if val in rows[i] or val in cols[j] or val in boxes[box_idx]:
                     return False
 
-                cols[c].add(d)
-                rows[r].add(d)
-                squares[(r // 3, c // 3)].add(d)
-
+                rows[i].add(val)
+                cols[j].add(val)
+                boxes[box_idx].add(val)
+        
         return True
 
-    # time complexity: O(1)
-    # space complexity: O(1)
+
