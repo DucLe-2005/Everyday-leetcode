@@ -1,19 +1,23 @@
 class Solution:
     def evalRPN(self, tokens: List[str]) -> int:
-        operands = []
+        # time: O(n)
+        # space: O(n)
+        
+        num_stack = []
+
         for t in tokens:
+            print(f"t: {t}")
             if t == "+":
-                operands.append(operands.pop() + operands.pop())
+                num_stack.append(num_stack.pop() + num_stack.pop())
             elif t == "-":
-                a = operands.pop() 
-                b = operands.pop()
-                operands.append(b - a)
+                a, b = num_stack.pop(), num_stack.pop()
+                num_stack.append(b - a)
             elif t == "*":
-                operands.append(operands.pop() * operands.pop())
+                num_stack.append(num_stack.pop() * num_stack.pop())
             elif t == "/":
-                a = operands.pop() 
-                b = operands.pop()
-                operands.append(int(b / a))
+                a, b = num_stack.pop(), num_stack.pop()
+                num_stack.append(int(b / a))
             else:
-                operands.append(int(t))
-        return operands[0]
+                num_stack.append(int(t))
+
+        return num_stack[0]
