@@ -2,11 +2,10 @@ class Solution:
     def evalRPN(self, tokens: List[str]) -> int:
         # time: O(n)
         # space: O(n)
-        
+
         num_stack = []
 
         for t in tokens:
-            print(f"t: {t}")
             if t == "+":
                 num_stack.append(num_stack.pop() + num_stack.pop())
             elif t == "-":
