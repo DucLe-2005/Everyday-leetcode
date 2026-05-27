@@ -3,12 +3,13 @@ class Solution:
         # time: O(m * n)
         # space: O(m + n)
         m, n = len(grid), len(grid[0])
-        row_count = [sum(row) for row in grid]
+        row_count = [0] * m
         col_count = [0] * n
 
         for i in range(m):
             for j in range(n):
                 col_count[j] += grid[i][j]
+                row_count[i] += grid[i][j]
         
         res = 0
         for i in range(m):
