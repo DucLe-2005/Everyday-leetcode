@@ -10,35 +10,28 @@ class FindElements:
     # space: O(n)
 
     # find:
-    # time: O(n)
-    # space: O(n)
+    # time: O(1)
+    # space: O(1)
     def __init__(self, root: Optional[TreeNode]):
-        self.root = root
-        self.root.val = 0
-        self.build_tree(self.root)
+        self.element_set = set([0])
         
-    def build_tree(self, root):
-        if not root:
-            return
-        if root.left:
-            root.left.val = 2 * root.val + 1
-            self.build_tree(root.left)
-        if root.right:
-            root.right.val = 2 * root.val + 2
-            self.build_tree(root.right)
-
-
-    def find(self, target: int) -> bool:
-        def dfs(root):
+        def recover(root, val):
             if not root:
-                return False
+                return
             
-            if root.val == target:
-                return True
-
-            return dfs(root.left) or dfs(root.right)
+            if root.left:
+                left = val * 2 + 1
+                self.element_set.add(left)
+                recover(root.left, left)
+            if root.right:
+                right = val * 2 + 2
+                self.element_set.add(right)
+                recover(root.right, right)
         
-        return dfs(self.root)
+        recover(root, 0)
+        
+    def find(self, target: int) -> bool:
+        return target in self.element_set
 
 
 # Your FindElements object will be instantiated and called as such:
