@@ -19,13 +19,12 @@ class FindElements:
             if not root:
                 return
             
+            self.element_set.add(val)
             if root.left:
                 left = val * 2 + 1
-                self.element_set.add(left)
                 recover(root.left, left)
             if root.right:
                 right = val * 2 + 2
-                self.element_set.add(right)
                 recover(root.right, right)
         
         recover(root, 0)
