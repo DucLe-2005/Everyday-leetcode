@@ -1,26 +1,25 @@
 class Solution:
     def canFinish(self, numCourses: int, prerequisites: List[List[int]]) -> bool:
+        # time: O(N + R), N = len(numcourses), R = len(prerequisites)
+        # space: O(N + R)
         graph = defaultdict(list)
-        indegree = [0] * numCourses
-
-        for child, parent in prerequisites:
-            graph[parent].append(child)
-            indegree[child] += 1
+        needed_count = [0] * numCourses
+        for course, prereq in prerequisites:
+            needed_count[course] += 1
+            graph[prereq].append(course)
         
-        zero_queue = deque()
-
+        q = deque([])
         for course in range(numCourses):
-            if indegree[course] == 0:
-                zero_queue.append(course)
-        
-        course_taken = 0
-        while zero_queue:
-            course = zero_queue.popleft()
-            course_taken += 1
+            if needed_count[course] == 0:
+                q.append(course)
 
-            for child in graph[course]:
-                indegree[child] -= 1
-                if indegree[child] == 0:
-                    zero_queue.append(child)
+        count = 0
+        while q:
+            item = q.popleft()
+            count += 1
+            for course in graph[item]:
+                needed_count[course] -= 1
+                if needed_count[course] == 0:
+                    q.append(course)
         
-        return course_taken == numCourses
+        return count == numCourses
