@@ -3,7 +3,8 @@ class Solution:
         # iterate each cell in board
         # if cell == word[0]: dfs, backtrack if one way return False
         # if one dfs return True, return True
-        # time: (m^2 * n^2)
+        # time: O(m * n * 3^L)
+        # space: O(L)
         visiting = set()
         m, n = len(board), len(board[0])
         def backtrack(row, col, i):
