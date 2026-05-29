@@ -24,9 +24,6 @@ class Solution:
             idx += 3
         
         if len(has_duplicates) > 0:
-            print("res += 1")
-            print(count)
-            print(has_duplicates)
             res += 1
         
         return res
