@@ -8,6 +8,6 @@ class Solution:
                 res.append(mod * unit)
             n = n // 10
             unit *= 10
-        res.reverse()
-        return res
+        
+        return res[::-1]
 
