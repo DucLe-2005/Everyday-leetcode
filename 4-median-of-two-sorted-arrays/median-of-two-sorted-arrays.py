@@ -2,7 +2,7 @@ class Solution:
     def findMedianSortedArrays(self, nums1: List[int], nums2: List[int]) -> float:
         # use binary search to cut parition on the shorter list
         # time: O(log(min(m, n))
-        # space: O(1)
+        # space: O(n + m)
         A, B = nums1, nums2
         if len(B) < len(A):
             A, B = B, A
