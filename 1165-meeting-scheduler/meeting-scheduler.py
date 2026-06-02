@@ -3,6 +3,8 @@ class Solution:
         # if start1 > end2: move slot2 forward
         # if start2 > end1: move slot1 forward
         # else calculate overlaps
+        # time: O(n log n + m log m)
+        # space: O(1)
         slots1.sort()
         slots2.sort()
         i, j = 0, 0
