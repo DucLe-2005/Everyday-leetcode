@@ -1,26 +1,15 @@
 class Solution:
     def longestWord(self, words: List[str]) -> str:
-        # put all words in a set
-        # for each word, check if all their prefixes is in the set
-        # if yes and len(word) > max length, update that word
-        # if len(word) == max length, choose the word that is lexicographically smaller
-        words = set(words)
-        res = ""
-        max_length = 0
+        # time: O(nlogn)
+        # space: O(n)
+        words.sort()
+        best = ""
+        valid = set()
+
         for word in words:
-            is_valid = True
-            print(f"word: {word}")
-            for i in range(len(word) - 1, 0, -1):
-                if word[:i] not in words:
-                    print(f"{word[:i]} not in words")
-                    is_valid = False
-                    break
-                
-            if is_valid:
-                if len(word) > max_length:
-                    res = word
-                    max_length = len(word)
-                elif len(word) == max_length and word < res:
-                    res = word
+            if len(word) == 1 or word[:-1] in valid:
+                valid.add(word)
+                if len(word) > len(best) or len(word) == len(best) and word < best:
+                    best = word
         
-        return res
+        return best
