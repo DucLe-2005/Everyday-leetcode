@@ -11,7 +11,6 @@ class Solution:
         q = deque([(headID, informTime[headID])]) # (employeeId, time)
         while q:
             id, time = q.popleft()
-            print(f"employee: {id}, time: {time}")
             res = max(res, time)
             for sub in subordinates[id]:
                 if informTime[sub]:
