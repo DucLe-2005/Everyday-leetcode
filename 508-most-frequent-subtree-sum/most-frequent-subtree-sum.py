@@ -21,13 +21,5 @@ class Solution:
             return sum
         
         dfs(root)
-        res = []
-        max_count = 0
-        for sum, count in sum_count.items():
-            if count > max_count:
-                max_count = count
-                res = [sum]
-            elif count == max_count:
-                res.append(sum)
-        
-        return res
+        max_freq = max(sum_count.values())
+        return [s for s in sum_count if sum_count[s] == max_freq]
