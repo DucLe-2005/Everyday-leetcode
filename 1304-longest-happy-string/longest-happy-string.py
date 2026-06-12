@@ -1,5 +1,7 @@
 class Solution:
     def longestDiverseString(self, a: int, b: int, c: int) -> str:
+        # time: O(a + b + c)
+        # space: O(1)
         heap = []
 
         for count, char in [(a, "a"), (b, "b"), (c, "c")]:
