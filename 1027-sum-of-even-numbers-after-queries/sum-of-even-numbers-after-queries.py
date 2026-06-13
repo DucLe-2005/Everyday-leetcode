@@ -3,25 +3,18 @@ class Solution:
         # time: O(n)
         # space: O(n)
 
-        total = 0
+        even_sum = 0
         for num in nums:
             if num % 2 == 0:
-                total += num
+                even_sum += num
         
-        answers = [0] * len(queries)
-        for i in range(len(queries)):
-            val, idx = queries[i]
-            new_val = nums[idx] + val
+        answers = []
+        for val, idx in queries:
             if nums[idx] % 2 == 0:
-                if new_val % 2 == 0: # both even
-                    total = total - nums[idx] + new_val
-                else: # old even, new odd
-                    total -= nums[idx]
-            else:
-                if new_val % 2 == 0: # old odd, new even
-                    total += new_val
-            
-            answers[i] = total
-            nums[idx] = new_val
+                even_sum -= nums[idx] 
+            nums[idx] += val
+            if nums[idx] % 2 == 0:
+                even_sum += nums[idx]
+            answers.append(even_sum)
             
         return answers
