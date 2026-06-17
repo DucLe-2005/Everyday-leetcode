@@ -6,7 +6,7 @@ class Solution:
 
         if n == 1:
             return True
-        elif s[n-1]==0:
+        elif s[n-1]==1:
             return False
 
         q = deque([0])
