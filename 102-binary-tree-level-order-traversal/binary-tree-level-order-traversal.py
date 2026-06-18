@@ -9,16 +9,18 @@ class Solution:
         if not root:
             return []
 
-        res = []
         q = deque([root])
+        res = []
         while q:
             level = []
             for _ in range(len(q)):
-                node = q.popleft()
-                level.append(node.val)
-                if node.left:
-                    q.append(node.left)
-                if node.right:
-                    q.append(node.right)
-            res.append(level)
+                pop = q.popleft()
+                level.append(pop.val)
+
+                if pop.left:
+                    q.append(pop.left)
+                if pop.right:
+                    q.append(pop.right)
+            res.append(level) 
+
         return res
