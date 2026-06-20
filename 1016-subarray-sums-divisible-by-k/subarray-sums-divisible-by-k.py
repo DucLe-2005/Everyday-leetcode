@@ -14,9 +14,6 @@ class Solution:
         for i, n in enumerate(nums):
             curr_sum += n
             remainder = curr_sum % k
-            
-            print(f"sum: {curr_sum}, remainder: {remainder}, idx: {i}")
-            print(f"res += {prefix[remainder]}, prefix[{remainder}] = {prefix[remainder]}")
             res += prefix[remainder]
             prefix[remainder] += 1
         
