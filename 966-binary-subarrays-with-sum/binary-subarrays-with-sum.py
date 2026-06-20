@@ -7,10 +7,7 @@ class Solution:
         for n in nums:
             curr += n
             diff = curr - goal
-            
-            print(f"n: {n}, sum: {curr}, prefix[{diff}]: {prefix[diff]}")
             res += prefix[diff]
-            print(f"res = {res}")
             prefix[curr] += 1
         
         return res
