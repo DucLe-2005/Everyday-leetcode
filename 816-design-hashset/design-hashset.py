@@ -1,4 +1,6 @@
 class MyHashSet:
+    # time: O(N/K), N = # of keys, K = # of buckets
+    # space: O(N + K)
 
     def __init__(self):
         self.keyRange = 769 # prime number for less collision
