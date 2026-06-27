@@ -1,7 +1,5 @@
 class Solution:
     def isPalindrome(self, s: str) -> bool:
-        l, r = 0, len(s) - 1
-
         def isAlphaNumeric(c):
             return (
                 ord('0') <= ord(c) <= ord('9') or
@@ -9,6 +7,7 @@ class Solution:
                 ord('A') <= ord(c) <= ord('Z')
             )
         
+        l, r = 0, len(s) - 1
         while l < r:
             while not isAlphaNumeric(s[l]) and l < r:
                 l += 1
@@ -23,5 +22,3 @@ class Solution:
             r -= 1
         
         return True
-
-                
