@@ -2,11 +2,11 @@ class MinStack:
 
     def __init__(self):
         self.stack = []
-        self.minStack = [] # minimum num up to the curr num
+        self.minStack = []
 
     def push(self, value: int) -> None:
         self.stack.append(value)
-        if not self.minStack or value <= self.minStack[-1]:
+        if not self.minStack or self.minStack[-1] >= value:
             self.minStack.append(value)
 
     def pop(self) -> None:
@@ -19,7 +19,6 @@ class MinStack:
 
     def getMin(self) -> int:
         return self.minStack[-1]
-
 
 # Your MinStack object will be instantiated and called as such:
 # obj = MinStack()
