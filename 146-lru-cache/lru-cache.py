@@ -1,6 +1,6 @@
 class Node:
-    def __init__(self, key, val):
-        self.key = key 
+    def __init__(self, key=0, val=0):
+        self.key = key
         self.val = val
         self.next = None
         self.prev = None
@@ -8,60 +8,57 @@ class Node:
 class LRUCache:
 
     def __init__(self, capacity: int):
-        self.table = {}
-        self.cap = capacity
-        self.left = Node(-1, -1)
-        self.right = Node(-1, -1)
+        self.pairs = {}
+        self.left, self.right = Node(), Node() 
         self.left.next = self.right
         self.right.prev = self.left
+        self.capacity = capacity
+    
+    def _delete_node(self, node):
+        node_left, node_right = node.prev, node.next
+        node_left.next = node_right
+        node_right.prev = node_left
 
-    def get(self, key: int) -> int:
-        print("get key", key)
-        if key in self.table:
-            node = self.table[key]
-            self.remove_node(node)
-            self.move_right(node)
-            return node.val
-        return -1
+    def _move_leftmost(self, node):
+        nxt = self.left.next
+        node.prev, node.next = self.left, nxt
+        self.left.next = node
+        nxt.prev = node   
+
         
+    def get(self, key: int) -> int:
+        if key in self.pairs:
+            node = self.pairs[key]
+            self._delete_node(node)
+            self._move_leftmost(node)
+            return node.val
+        return - 1
 
     def put(self, key: int, value: int) -> None:
-        print("put:", key, value)
-        if key in self.table:
-            node = self.table[key]
+        if key in self.pairs:
+            node = self.pairs[key]
             node.val = value
-            self.remove_node(node)
-            self.move_right(node)
+            self._delete_node(node)
+            self._move_leftmost(node)
         else:
-            print("new key:", key)
-            new_node = Node(key, value)
-            self.table[key] = new_node
-            self.move_right(new_node)
-            if len(self.table) > self.cap:
-                print("len > capacity")
-                self.remove_lru()
-    
-    def remove_node(self, node: Node):
-        print(node.key)
-        prev, nxt = node.prev, node.next
-        prev.next = nxt
-        nxt.prev = prev
+            node = Node(key, value)
+            self.pairs[key] = node
+            self._move_leftmost(node)
 
-    def move_right(self, node: Node):
-        print("move right:", node.key)
-        right_most = self.right.prev
+            if len(self.pairs) > self.capacity:
+                del self.pairs[self.right.prev.key]
+                self._delete_node(self.right.prev)
+            
+    def _print_list(self):
+        curr = self.left.next
+        res = []
 
-        right_most.next = node
-        node.next = self.right
+        while curr != self.right:
+            res.append(f"{curr.key}: {curr.val}")
+            curr = curr.next
 
-        node.prev = right_most
-        self.right.prev = node
-
-    def remove_lru(self):
-        print("remove_lru")
-        node = self.left.next
-        self.remove_node(node)
-        del self.table[node.key]
+        return " -> ".join(res)
+                
 
 # Your LRUCache object will be instantiated and called as such:
 # obj = LRUCache(capacity)
