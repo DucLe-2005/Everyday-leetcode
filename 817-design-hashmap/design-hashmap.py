@@ -1,16 +1,15 @@
 class MyHashMap:
 
     def __init__(self):
-        self.keyRange = 769
-        self.buckets = [Bucket() for _ in range(self.keyRange)]
-    
+        self.size = 769
+        self.buckets = [Bucket() for _ in range(self.size)]
+
     def _hash(self, key):
-        print(f"key: {key}, hash: {key % self.keyRange}")
-        return key % self.keyRange
+        return key % self.size
 
     def put(self, key: int, value: int) -> None:
         bucket = self.buckets[self._hash(key)]
-        bucket.insertNode(key, value)
+        bucket.putNode(key, value)
 
     def get(self, key: int) -> int:
         bucket = self.buckets[self._hash(key)]
@@ -18,30 +17,30 @@ class MyHashMap:
 
     def remove(self, key: int) -> None:
         bucket = self.buckets[self._hash(key)]
-        bucket.deleteNode(key)
-
+        return bucket.removeNode(key)
 
 class Node:
-    def __init__(self, key, val):
+    def __init__(self, key=0, val=0):
         self.key = key
         self.val = val
         self.next = None
 
 class Bucket:
     def __init__(self):
-        self.head = Node(0, 0) # pseudo head
+        self.head = Node() # pseudo head
     
-    def insertNode(self, key: int, val: int) -> None:
-        prev = self.head
-        curr = self.head.next
+    def putNode(self, key: int, val: int) -> None:
+        prev, curr = self.head, self.head.next
         while curr:
             if curr.key == key:
                 curr.val = val
                 return
             curr = curr.next
             prev = prev.next
+        
+        # add new (key, value) pair since key is new
         prev.next = Node(key, val)
-
+    
     def getNode(self, key: int) -> int:
         curr = self.head.next
         while curr:
@@ -49,16 +48,18 @@ class Bucket:
                 return curr.val
             curr = curr.next
         return -1
-
-    def deleteNode(self, key: int) -> int:
-        prev = self.head
-        curr = self.head.next
+    
+    def removeNode(self, key):
+        prev, curr = self.head, self.head.next
         while curr:
             if curr.key == key:
                 prev.next = curr.next
                 return
-            prev = prev.next
             curr = curr.next
+            prev = prev.next
+    
+
+
 
 # Your MyHashMap object will be instantiated and called as such:
 # obj = MyHashMap()
