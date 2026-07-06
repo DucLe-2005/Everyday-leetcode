@@ -1,7 +1,7 @@
 class StockPrice:
 
     def __init__(self):
-        # (p1, t1) -> (p2, t2) -> (p3, t3)
+        # lazy deletion with hash map and heaps
         self.records = defaultdict(int) # timestamp = price
         self.min_records = [] # min heap
         self.max_records = [] # max heap
