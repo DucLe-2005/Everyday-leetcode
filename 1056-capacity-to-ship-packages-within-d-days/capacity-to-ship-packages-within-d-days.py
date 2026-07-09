@@ -1,6 +1,7 @@
 class Solution:
     def shipWithinDays(self, weights: List[int], days: int) -> int:
-        # time: O()
+        # time: O(nlogk), n = len(weights), k = (sum(weights), max(weights) is small and neglectable
+        # space: O(1)
         low, high = max(weights), sum(weights)
         res = high
         while low <= high:
