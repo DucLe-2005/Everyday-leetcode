@@ -1,10 +1,14 @@
 class Solution:
     def maxProfit(self, prices: List[int]) -> int:
-        minimum_price = prices[0]
+        low, high = prices[0], prices[0]
         res = 0
-
-        for i in range(1, len(prices)):
-            res = max(res, prices[i] - minimum_price)
-            minimum_price = min(minimum_price, prices[i])
+        for price in prices:
+            if price < low: # new low, reset sell-buy window
+                low = price
+                high = price
+            if price > high:
+                high = price
+            
+            res = max(res, high - low)
         
         return res
