@@ -7,19 +7,25 @@
 
 class Solution:
     def lowestCommonAncestor(self, root: 'TreeNode', p: 'TreeNode', q: 'TreeNode') -> 'TreeNode':
-        # if current node is between p and q, return current node
-        # if current node is bigger than p and q, find common ancestor on root.left 
-        # if current node is smaller than p and q, find common ancestor on root.right  
-        # if current node is p or q, return the current node
+        # if root is p or q and found p or q on either left or right child: root is lca
+        # if root is not p or q and found p or q on both or right child: root is lca
+        res = None
 
-        if not root:
-            return None
+        def dfs(node):
+            nonlocal res
+            if not node or res:
+                return 0
+
+            left = dfs(node.left)
+            right = dfs(node.right)
+            x = left + right
+            if node.val == p.val or node.val == q.val:
+                x += 1
+            
+            if x == 2 and not res:
+                res = node
+
+            return x
         
-        if root.val == p.val or root.val == q.val:
-            return root
-        elif root.val > p.val and root.val > q.val:
-            return self.lowestCommonAncestor(root.left, p, q)
-        elif root.val < p.val and root.val < q.val:
-            return self.lowestCommonAncestor(root.right, p, q)
-        return root
-        
+        dfs(root)
+        return res
