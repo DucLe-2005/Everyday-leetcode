@@ -6,37 +6,31 @@
 #         self.right = right
 class Solution:
     def deleteNode(self, root: Optional[TreeNode], key: int) -> Optional[TreeNode]:
-        # time: O(logN) in a balanced BST, O(n) in a totally skewed tree
-        # space: O(logN)................., O(n) in a skewed tree
         if not root:
             return None
-        
-        if key > root.val:
-            root.right = self.deleteNode(root.right, key)
-        elif key < root.val:
+        if root.val > key:
             root.left = self.deleteNode(root.left, key)
+        elif root.val < key:
+            root.right = self.deleteNode(root.right, key)
         else:
-            # node is a leaf
             if not root.left and not root.right:
                 root = None
-            elif root.right: # node has a right child
-                root.val = self.successor(root)
-                root.right = self.deleteNode(root.right, root.val) # delete the selected leaf
-            else: # node has a left childe
-                root.val = self.predecessor(root)
-                root.left = self.deleteNode(root.left, root.val) # delete the selected leaf
-
+            elif root.left:
+                root.val = self.findPredecessor(root)
+                root.left = self.deleteNode(root.left, root.val)
+            else:
+                root.val = self.findSuccessor(root)
+                root.right = self.deleteNode(root.right, root.val)
+        
         return root
-
-    def predecessor(self, node):
+    def findPredecessor(self, node):
         curr = node.left
         while curr.right:
             curr = curr.right
         return curr.val
-    
-    def successor(self, node):
+
+    def findSuccessor(self, node):
         curr = node.right
         while curr.left:
             curr = curr.left
         return curr.val
-    
