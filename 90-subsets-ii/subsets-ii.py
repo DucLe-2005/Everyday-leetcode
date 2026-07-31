@@ -1,23 +1,21 @@
 class Solution:
     def subsetsWithDup(self, nums: List[int]) -> List[List[int]]:
-        nums.sort()
+        # time: O(n * 2^n)
+        # space: O(n)
         res = []
-        cur = []
+        nums.sort()
 
-        def dfs(i):
-            if i == len(nums):
-                res.append(cur[:])
-                return
-            
-            cur.append(nums[i])
-            dfs(i+1)
-            cur.pop()
+        def dfs(start: int, path: List[int]) -> None:
+            nonlocal res
+            res.append(path.copy())
 
-            # skip duplicate numbers at the same recursion level
-            while i + 1 < len(nums) and nums[i] == nums[i+1]:
-                i += 1
-
-            dfs(i+1)
+            for i in range(start, len(nums)):
+                if i > start and nums[i] == nums[i-1]:
+                    continue
+                
+                path.append(nums[i])
+                dfs(i + 1, path)
+                path.pop()
         
-        dfs(0)
+        dfs(0, [])
         return res
