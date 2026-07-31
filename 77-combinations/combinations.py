@@ -1,19 +1,21 @@
 class Solution:
     def combine(self, n: int, k: int) -> List[List[int]]:
+        # time: O(2^n + k * C(n, k))
+        # space: O(n)
         res = []
 
-        def backtrack(comb, start):
-            if len(comb) == k:
-                res.append(comb.copy())
+        def dfs(i: int, combination: List[int]) -> None:
+            nonlocal res
+            if len(combination) == k:
+                res.append(combination[:])
+                return
+            if i > n:
                 return
             
-            for i in range(start, n + 1):
-                comb.append(i)
-                backtrack(comb, i + 1)
-                comb.pop()
+            dfs(i + 1, combination)
+            combination.append(i)
+            dfs(i + 1, combination)
+            combination.pop()
         
-        backtrack([], 1)
+        dfs(1, [])
         return res
-    
-    # time complexity: O(k * c(n, k))
-    # space complexity: O(k  c(n, k))
