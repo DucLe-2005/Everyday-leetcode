@@ -5,10 +5,8 @@ class Node:
 
 class Solution:
     def wordBreak(self, s: str, wordDict: List[str]) -> List[str]:
-        # construct a trie word dictionary
-        # at index ith, if s[i] is end of a word in wordDict, add the word to the path
-        # if i == len(s): add path to result
-        # travel dfs(node.childrens[i])
+        # time: O(W + n * 2^n), n = len(s), W = sum of letters in wordDict
+        # space: O(W + n)
         root = self.buildTrieDict(wordDict)
         res = []
 
@@ -20,14 +18,17 @@ class Solution:
                     path.pop()
                 return
 
-            for letter, child in node.children.items():
-                if letter == s[i+1]:
-                    if child.is_end:
-                        print(f"letter: {letter}, word: {curr_word}")
-                        path.append(curr_word + letter)
-                        dfs(i+1, root, path, "")
-                        path.pop()
-                    dfs(i+1, child, path, curr_word + letter)
+            letter = s[i+1]
+            if letter not in node.children:
+                return
+            
+            child = node.children[letter]
+            if child.is_end:
+                path.append(curr_word + letter)
+                dfs(i+1, root, path, "")
+                path.pop()
+                
+            dfs(i+1, child, path, curr_word + letter)
                     
         if s[0] in root.children:
             node = root.children[s[0]]
