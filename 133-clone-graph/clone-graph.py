@@ -9,19 +9,26 @@ class Node:
 from typing import Optional
 class Solution:
     def cloneGraph(self, node: Optional['Node']) -> Optional['Node']:
-        # hashmap to map old to new nodew
-        # use dfs to add neighbors to the new node
-        oldToNew = {}
-        
-        def dfs(node):
-            if node in oldToNew:
-                return oldToNew[node]
+        # time: O(V + E)
+        # space: O(V)
+        if not node:
+            return None
+
+        old_to_new = {}
+
+        def cloneNode(node):
+            if node in old_to_new:
+                return old_to_new[node]
             
             copy = Node(node.val)
-            oldToNew[node] = copy
+            old_to_new[node] = copy
             for nei in node.neighbors:
-                copy.neighbors.append(dfs(nei))
+                copy.neighbors.append(cloneNode(nei))
+
+            return old_to_new[node]
+
+        return cloneNode(node)
+
             
-            return oldToNew[node]
-        
-        return dfs(node) if node else None
+            
+
