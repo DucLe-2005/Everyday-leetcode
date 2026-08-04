@@ -8,10 +8,10 @@ class Solution:
         def bfs(start_r: int, start_c: int):
             queue = deque([(start_r, start_c)])
             area = 0
+            visited.add((start_r, start_c))
 
             while queue:
                 r, c = queue.popleft()
-                visited.add((r, c))
                 area += 1
                 for dr, dc in [(1, 0), (-1, 0), (0, -1), (0, 1)]:
                     nr, nc = r + dr, c + dc
