@@ -1,40 +1,39 @@
 class Solution:
     def pacificAtlantic(self, heights: List[List[int]]) -> List[List[int]]:
-        # run dfs on the top and left sides to mark all positions that can flow to the pacific ocean; record visited positions to a set
-        # run dfs on the bottom and right sides to mark all positions that can flow to the atlantic ocean; record visited positions to a set
-        # the poisitions that can flow to both oceans are the ones that are on both sets.
         # time: O(m * n)
         # space: O(m * n)
-    
         m, n = len(heights), len(heights[0])
-        pac, atl = set(), set()
+        pacific, atlantic = set(), set()
 
-        def dfs(r, c, visit, prevHeight):
-            if r not in range(m) or c not in range(n) or (r, c) in visit or heights[r][c] < prevHeight:
-                return
-            
-            visit.add((r, c))
-            cur_height = heights[r][c]
+        def dfs(r, c, visited):
+            for dr, dc in [(1, 0), (-1, 0), (0, -1), (0, 1)]:
+                nr, nc = r + dr, c + dc
+                if (
+                    0 <= nr < m and
+                    0 <= nc < n and
+                    heights[nr][nc] >= heights[r][c] and
+                    (nr, nc) not in visited
+                ):
+                    visited.add((nr, nc))
+                    dfs(nr, nc, visited)
+        
+        for col in range(n):
+            pacific.add((0, col))
+            dfs(0, col, pacific)
 
-            dfs(r + 1, c, visit, cur_height)
-            dfs(r - 1, c, visit, cur_height) 
-            dfs(r, c + 1, visit, cur_height) 
-            dfs(r, c - 1, visit, cur_height) 
-
-        for r in range(m):
-            dfs(r, 0, pac, heights[r][0])
-            dfs(r, n - 1, atl, heights[r][n - 1])
+            atlantic.add((m - 1, col))
+            dfs(m - 1, col, atlantic)
         
-        for c in range(n):
-            dfs(0, c, pac, heights[0][c])
-            dfs(m - 1, c, atl, heights[m - 1][c])
+        for row in range(m):
+            pacific.add((row, 0))
+            dfs(row, 0, pacific)
         
-        res = []
-        for r, c in pac:
-            if (r, c) in atl:
-                res.append([r, c])
+            atlantic.add((row, n - 1))
+            dfs(row, n - 1, atlantic)
         
-        return res
+        result = []
+        for r, c in pacific:
+            if (r, c) in atlantic:
+                result.append([r, c])
         
-
-        
+        return result
