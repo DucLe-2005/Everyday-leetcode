@@ -1,56 +1,26 @@
 class Solution:
     def validTree(self, n: int, edges: List[List[int]]) -> bool:
-        if n - 1 != len(edges):
-            return False
-
-        parents = [i for i in range(n)]
-        sizes = [1 for _ in range(n)]
+        # a valid tree -> no circle, connected
+        # time: O(V + E)
+        # space: O(V + E)
+        graph = defaultdict(list)
+        for a, b in edges:
+            graph[a].append(b)
+            graph[b].append(a)
         
-        # -------- helper functions ---------- #
-        def find(A: int) -> int:
-            # find the root
-            root = A
-            while root != parents[root]:
-                root = parents[root]
-
-            # update the root to all vertices on the path
-            old_root = parents[A]
-            while A != root:
-                old_root = parents[A]
-                parents[A] = root
-                A = old_root
-            
-            return root
-
-        def union(A: int, B: int) -> bool:
-            root_A = find(A)
-            root_B = find(B)
-
-            # a cycle is detected because two nodes have the same root
-            if root_A == root_B:
-                return False
-            
-            # ensure that the root of the larger set remains the root
-            if sizes[root_A] < sizes[root_B]:
-                parents[root_A] = root_B
-                sizes[root_A] += sizes[root_B]
-                sizes[root_B] = sizes[root_A]
-            else:
-                parents[root_B] = root_A
-                sizes[root_A] += sizes[root_B]
-                sizes[root_B] = sizes[root_A]
-
-            return True
-
-        # ---------- end of helper functions ---------- #
-
-        for A, B in edges:
-            if not union(A, B):
-                return False
+        q = deque([(0, -1)])
         
-        return True
+        visited = set()
+        while q:
+            node, parent = q.popleft()
+            visited.add(node)
 
-
-
-
+            for nei in graph[node]:
+                print(f"node: {node}, nei: {nei}")
+                if nei == parent:
+                    continue
+                if nei in visited:
+                    return False
+                q.append((nei, node))
             
+        return len(visited) == n
