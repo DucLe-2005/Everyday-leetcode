@@ -3,6 +3,9 @@ class Solution:
         # a valid tree -> no circle, connected
         # time: O(V + E)
         # space: O(V + E)
+        if len(edges) != n - 1:
+            return False
+            
         graph = defaultdict(list)
         for a, b in edges:
             graph[a].append(b)
