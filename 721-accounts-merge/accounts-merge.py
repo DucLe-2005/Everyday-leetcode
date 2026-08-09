@@ -1,66 +1,44 @@
-class Solution:
-    def accountsMerge(self, accounts: List[List[str]]) -> List[List[str]]:
-        self.email_to_name = {}
-        self.parents = {}
-        self.sizes = {}
+class UnionFind:
+    def __init__(self, n):
+        self.parent = list(range(n))
+        self.size = [0] * n
 
-        # create parents and sizes array
-        for account in accounts:
-            name = account[0]
+    def find(self, x):
+        if x != self.parent[x]:
+            self.parent[x] = self.find(self.parent[x])
+        return self.parent[x]
 
-            for email in account[1:]:
-                self.parents[email] = email
-                self.sizes[email] = 1
-                self.email_to_name[email] = name
-        
-        # merge accounts
-        for account in accounts:
-            for i in range(1, len(account) - 1):
-                for j in range(i + 1, len(account)):
-                    print("unioinin", account[i], account[j])
-                    self.union(account[i], account[j])
-                    
-        
-        groups = defaultdict(list)
-        for email in self.email_to_name:
-            root = self.find(email)
-            groups[root].append(email)
-        
-        res = []
-        for root, emails in groups.items():
-            emails.sort()
-            res.append([self.email_to_name[root]] + emails)
-        
-        return res
+    def union(self, a, b):
+        root_a = self.find(a)
+        root_b = self.find(b)
 
-    def find(self, A):
-        root = A
-        while root != self.parents[root]:
-            root = self.parents[root]
-        
-        old_root = self.parents[A]
-        while A != root:
-            old_root = self.parents[A]
-            self.parents[A] = root
-            A = old_root
-        
-        return root
+        if root_a == root_b:
+            return False
 
-    def union(self, A, B):
-        root_A = self.find(A)
-        root_B = self.find(B)  
+        if self.size[root_a] < self.size[root_b]:
+            root_a, root_b = root_b, root_a
 
-        if self.sizes[root_A] < self.sizes[root_B]:
-            self.email_to_name[root_A] = self.email_to_name[root_B]
-            self.parents[root_A] = root_B
-            self.sizes[root_B] += self.sizes[root_A]
-            
-        else:
-            self.email_to_name[root_B] = self.email_to_name[root_A]
-            self.parents[root_B] = root_A
-            self.sizes[root_A] += self.sizes[root_A]
+        self.parent[root_b] = root_a
+        self.size[root_a] += self.size[root_b] 
 
         return True
+
+class Solution:
+    def accountsMerge(self, accounts: List[List[str]]) -> List[List[str]]:
+        # time: O(Ea(N) + Elog(E)) = O(Elog(E)), N = len(accounts), E = number of emails
+        # space: O(N + E)
+        u = UnionFind(len(accounts))
+
+        email_to_owner = {}
+        for i, acc in enumerate(accounts):
+            for email in acc[1:]:
+                if email in email_to_owner:
+                    u.union(i, email_to_owner[email])
+                email_to_owner[email] = i
+
+        owner_to_email = defaultdict(list)
+        for email, owner in email_to_owner.items():
+            owner_to_email[u.find(owner)].append(email)
         
-
-
+        return [[accounts[owner][0]] + sorted(emails) for owner, emails in owner_to_email.items()] 
+    
