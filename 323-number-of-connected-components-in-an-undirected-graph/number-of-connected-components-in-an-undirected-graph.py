@@ -1,31 +1,35 @@
 class Solution:
     def countComponents(self, n: int, edges: List[List[int]]) -> int:
-        # construct an adjacency list
-        # iterate each node in adjacency list
-        # if the node isn't visited, res += 1, bfs from that node, mark all connected nodes visited
-        # time: O(V + E)
-        # space: O(V + E)
+        # time: O(V + Ea(V)), a(V) = inverse Ackermann function
+        # space: O(V)
+        parent = list(range(n))
+        size = [1] * n
 
-        adjacency = defaultdict(list)
-        for a, b in edges:
-            adjacency[a].append(b)
-            adjacency[b].append(a)
+        def find(x):
+            if x != parent[x]:
+                parent[x] = find(parent[x])
+            
+            return parent[x]
         
-        res = 0
-        visited = set()
-        for node in adjacency:
-            if node in visited:
-                continue
-            res += 1
-            
-            q = deque([node])
-            while q:
-                node = q.popleft()
-                visited.add(node)
+        def union(a, b):
+            root_a = find(a)
+            root_b = find(b)
 
-                for nei in adjacency[node]:
-                    if nei not in visited:
-                        q.append(nei)
+            if root_a == root_b:
+                return False
             
-        return res + n - len(visited)
+            if size[root_a] < size[root_b]:
+                root_a, root_b = root_b, root_a
             
+            parent[root_b] = root_a
+            size[root_a] += size[root_b]
+
+            return True
+        
+        components = n
+
+        for a, b in edges:
+            if union(a, b):
+                components -= 1
+        
+        return components
