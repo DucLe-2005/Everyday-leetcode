@@ -1,48 +1,31 @@
 class Solution:
     def countComponents(self, n: int, edges: List[List[int]]) -> int:
-        # time: O(V + )
-        parents = [i for i in range(n)]
-        sizes = [1 for _ in range(n)]
-        component_count = n
+        # construct an adjacency list
+        # iterate each node in adjacency list
+        # if the node isn't visited, res += 1, bfs from that node, mark all connected nodes visited
+        # time: O(V + E)
+        # space: O(V + E)
 
-        # ------- union find functions -------- #
-        def find(A: int) -> int:
-            root = A
-            while root != parents[root]:
-                root = parents[root]
-            
-            # update the root for the vertices on the path
-            old_root = parents[A]
-            while A != root:
-                old_root = parents[A]
-                parents[A] = root
-                A = old_root
-            
-            return root
-            
-        def union(A: int, B: int) -> int:
-            root_A = find(A)
-            root_B = find(B)
-
-            # if A and B are already connected, then don't decrease count
-            if root_A == root_B:
-                return 0
-            
-            # ensure the root of the larger set remain the root
-            if sizes[root_A] < sizes[root_B]:
-                parents[root_A] = root_B
-                sizes[root_B] += sizes[root_A]
-                sizes[root_A] = sizes[root_B]
-            else:
-                parents[root_B] = root_A
-                sizes[root_B] += sizes[root_A]
-                sizes[root_A] = sizes[root_B]
+        adjacency = defaultdict(list)
+        for a, b in edges:
+            adjacency[a].append(b)
+            adjacency[b].append(a)
         
-            return 1
+        res = 0
+        visited = set()
+        for node in adjacency:
+            if node in visited:
+                continue
+            res += 1
             
-        # ----------- end of union find functions ---------- #
+            q = deque([node])
+            while q:
+                node = q.popleft()
+                visited.add(node)
 
-        for A, B in edges:
-            component_count -= union(A, B)
-        
-        return component_count
+                for nei in adjacency[node]:
+                    if nei not in visited:
+                        q.append(nei)
+            
+        return res + n - len(visited)
+            
