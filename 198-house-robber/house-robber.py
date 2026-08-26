@@ -1,12 +1,10 @@
 class Solution:
     def rob(self, nums: List[int]) -> int:
-        # money1 -> money2 -> curr
-        money1 = 0
-        money2 = 0
-
+        # rob1 -> rob2 -> curr
+        rob1 = rob2 = 0
         for num in nums:
-            curr_money = max(num + money1, money2)
-            money1 = money2
-            money2 = curr_money
+            new_rob = max(num + rob1, rob2)
+            rob1 = rob2
+            rob2 = new_rob
         
-        return money2
+        return rob2
