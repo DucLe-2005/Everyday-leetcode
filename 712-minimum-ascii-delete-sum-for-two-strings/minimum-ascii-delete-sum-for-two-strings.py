@@ -5,25 +5,22 @@ class Solution:
         # delete s2[s2Index]: s2Index + 1
         # if s1[s2Index] == s2[s2Index]: s2Index + 1, s1Index + 1
 
-        memo = [[None for _ in range(len(s2))] for _ in range(len(s1))]
+        dp = [[0] * (len(s2) + 1) for _ in range(len(s1) + 1)]
 
-        def dfs(s1Index, s2Index):
-            if s1Index == len(s1):
-                return sum(ord(s2[i]) for i in range(s2Index, len(s2)))
-            if s2Index == len(s2):
-                return sum(ord(s1[i]) for i in range(s1Index, len(s1)))
-            if memo[s1Index][s2Index]:
-                return memo[s1Index][s2Index]
-
-            if s1[s1Index] == s2[s2Index]:
-                lowest_sum = dfs(s1Index + 1, s2Index + 1)
-            else:
-                lowest_sum = min(
-                    dfs(s1Index + 1, s2Index) + ord(s1[s1Index]),
-                    dfs(s1Index, s2Index + 1) + ord(s2[s2Index])
-                )
-            
-            memo[s1Index][s2Index] = lowest_sum
-            return lowest_sum
+        for i in range(1, len(s1) + 1):
+            dp[i][0] = dp[i-1][0] + ord(s1[i-1])
         
-        return dfs(0, 0)
+        for j in range(1, len(s2) + 1):
+            dp[0][j] = dp[0][j-1] + ord(s2[j-1])
+
+        for i in range(1, len(s1) + 1):
+            for j in range(1, len(s2) + 1):
+                if s1[i-1] == s2[j-1]:
+                    dp[i][j] = dp[i-1][j-1]
+                else:
+                    dp[i][j] = min(
+                        dp[i-1][j] + ord(s1[i-1]), # delete s2[j-1]
+                        dp[i][j-1] + ord(s2[j-1])  # delete s1[i-1]
+                    )
+        
+        return dp[-1][-1]
