@@ -1,20 +1,19 @@
 class Solution:
     def findPairs(self, nums: List[int], k: int) -> int:
-        # use hash table to count nums occurences
-        # k = 0 means finding duplicates
-        # k > 0 means finding pairs
-        # for k = 0, add 1 if val >= 2
-        # for k > 0, add 1 if k - num is in the hash table
+        num_count = {}
+        for num in nums:
+            num_count[num] = num_count.get(num, 0) + 1
 
-        d = Counter(nums)
         res = 0
-        if k == 0:
-            for val in d.values():
-                if val >= 2:
-                    res += 1
-        else:
-            for n in d:
-                if n + k in d:
-                    res += 1
+        print(num_count)
 
+        for num in num_count:
+            print(f"num: {num}")
+            if k == 0:
+                res += 1 if num_count[num] > 1 else 0
+            elif num - k in num_count:
+                res += 1
+            
+            print(res)
+        
         return res
