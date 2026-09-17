@@ -4,7 +4,7 @@
 #         self.val = val
 #         self.next = next
 class Solution:
-    def sortList(self, head: Optional[ListNode]) -> Optional[ListNode]:
+    def sortList(self, head: ListNode | None) -> ListNode | None:
         if not head or not head.next:
             return head
         
@@ -13,31 +13,30 @@ class Solution:
         right = self.sortList(mid)
 
         return self.merge(left, right)
-        
-    
-    def merge(self, list1, list2):
-        dummyHead = ListNode()
-        cur = dummyHead
-
-        while list1 and list2:
-            if list1.val > list2.val:
-                cur.next = list2
-                list2 = list2.next
-            else:
-                cur.next = list1
-                list1 = list1.next
-            cur = cur.next
-        
-        cur.next = list1 if list1 else list2
-        return dummyHead.next
     
     def getMid(self, head):
-        fast = head.next
-        slow = head
-        while fast and fast.next:
-            fast = fast.next.next
-            slow = slow.next
+        slow, fast = head, head.next
 
+        while fast and fast.next:
+            slow = slow.next
+            fast = fast.next.next
+        
         mid = slow.next
-        slow.next = None        
+        slow.next = None
         return mid
+    
+    def merge(self, head1, head2):
+        dummy = ListNode()
+        curr = dummy
+
+        while head1 and head2:
+            if head1.val < head2.val:
+                curr.next = head1
+                head1 = head1.next
+            else:
+                curr.next = head2
+                head2 = head2.next
+            curr = curr.next
+        curr.next = head1 if head1 else head2
+
+        return dummy.next
