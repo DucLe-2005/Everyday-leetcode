@@ -1,25 +1,32 @@
 class Solution:
     def canFinish(self, numCourses: int, prerequisites: List[List[int]]) -> bool:
-        # time: O(N + R), N = len(numcourses), R = len(prerequisites)
-        # space: O(N + R)
-        graph = defaultdict(list)
-        needed_count = [0] * numCourses
-        for course, prereq in prerequisites:
-            needed_count[course] += 1
-            graph[prereq].append(course)
-        
-        q = deque([])
-        for course in range(numCourses):
-            if needed_count[course] == 0:
-                q.append(course)
 
-        count = 0
-        while q:
-            item = q.popleft()
-            count += 1
-            for course in graph[item]:
-                needed_count[course] -= 1
-                if needed_count[course] == 0:
-                    q.append(course)
+        adj_list = [[] for _ in range(numCourses)]
+        for a, b in prerequisites:
+            adj_list[a].append(b)
+
+
+        state = [0] * numCourses # 0 = unvisited, 1 = active, 2 = finished
+        def dfs(node):
+            if state[node] == 1:
+                return False
+            if state[node] == 2:
+                return True
+
+            state[node] = 1
+
+            for nei in adj_list[node]:
+                if not dfs(nei):
+                    return False
+            
+            state[node] = 2
+            
+            return True
         
-        return count == numCourses
+        for course in range(numCourses):
+            if not dfs(course):
+                return False
+        
+        return True
+
+            
