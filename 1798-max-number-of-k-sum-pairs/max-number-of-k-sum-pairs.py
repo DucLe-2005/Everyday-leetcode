@@ -1,14 +1,16 @@
 class Solution:
     def maxOperations(self, nums: List[int], k: int) -> int:
+        num_count = {}
         res = 0
-        visited = {}
         for num in nums:
-            if k - num in visited:
-                visited[k - num] -= 1
-                if visited[k - num] == 0:
-                    del visited[k - num]
+            diff = k - num
+            if diff in num_count:
                 res += 1
+                num_count[diff] -= 1
+
+                if num_count[diff] == 0:
+                    del num_count[diff]
             else:
-                visited[num] = visited.get(num, 0) + 1
+                num_count[num] = num_count.get(num, 0) + 1
         
         return res
