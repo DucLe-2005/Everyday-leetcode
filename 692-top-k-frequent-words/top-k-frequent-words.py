@@ -1,16 +1,15 @@
 class Solution:
-    def topKFrequent(self, words: List[str], k: int) -> List[str]:
-        wordMap = collections.defaultdict(int)
+    def topKFrequent(self, words: list[str], k: int) -> list[str]:
+        word_count = defaultdict(int)
         for w in words:
-            wordMap[w] += 1
+            word_count[w] += 1
         
-        heap = []
-        for word, freq in wordMap.items():
-            heapq.heappush(heap, (-freq, word))
+        word_list = [(-count, word) for word, count in word_count.items()]
+        heapq.heapify(word_list)
 
         res = []
-        for _ in range(k):
-            res.append(heapq.heappop(heap)[1])
+        while k:
+            res.append(heapq.heappop(word_list)[1])
+            k -= 1
         
         return res
-
