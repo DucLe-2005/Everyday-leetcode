@@ -14,14 +14,12 @@ class Solution:
                 break
     
         res = []
-        while curr != prev:
+        while len(res) < len(adj_map):
             res.append(curr)
-            tmp = curr
             for nei in adj_map[curr]:
-                if nei == prev:
-                    continue
-                curr = nei
-            prev = tmp
+                if nei != prev:
+                    prev, curr = curr, nei
+                    break
              
         return res
             
