@@ -1,41 +1,38 @@
 class Solution:
     def getNumberOfBacklogOrders(self, orders: List[List[int]]) -> int:
-        # if get buy order, want to match smallest sell order
-        # if get sell order, want to match largest buy order
-        buy_orders = [] # max heap, (price, amount)
-        sell_orders = [] # min heap, (price, amount)
+        # time: O(nlogn)
+        # space: O(n)
+        buy_orders = []
+        sell_orders = []
 
-        for price, amount, order_type in orders:
-            if order_type == 0: # buy
-                while sell_orders and sell_orders[0][0] <= price and amount:
-                    sell_price, sell_amount = heapq.heappop(sell_orders)
+        for price, amount, t in orders:
+            if t == 0: # buy
+                while amount > 0 and sell_orders and sell_orders[0][0] <= price:
+                    sell_price, available = heapq.heappop(sell_orders)
 
-                    matched = min(amount, sell_amount)
+                    matched = min(available, amount)
+                    
+                    available -= matched
                     amount -= matched
-                    sell_amount -= matched
 
-                    if sell_amount > 0:
-                        heapq.heappush(sell_orders, (sell_price, sell_amount))
-                if amount:
+                    if available > 0:
+                        heapq.heappush(sell_orders, (sell_price, available))
+                
+                if amount > 0:
                     heapq.heappush(buy_orders, (-price, amount))
-            else: # sell
-                while buy_orders and -buy_orders[0][0] >= price and amount:
-                    neg_buy_price, buy_amount = heapq.heappop(buy_orders)
+            else:
+                while amount > 0 and buy_orders and -buy_orders[0][0] >= price:
+                    neg_buy_price, available = heapq.heappop(buy_orders)
+                    
+                    matched = min(available, amount)
 
-                    matched = min(amount, buy_amount)
+                    available -= matched
                     amount -= matched
-                    buy_amount -= matched
 
-                    if buy_amount:
-                        heapq.heappush(buy_orders, (neg_buy_price, buy_amount))
-                if amount:
+                    if available > 0:
+                        heapq.heappush(buy_orders, (neg_buy_price, available))
+                
+                if amount > 0:
                     heapq.heappush(sell_orders, (price, amount))
         
-        total = 0
-
-        for _, amount in buy_orders:
-            total += amount
-        for _, amount in sell_orders:
-            total += amount
-        
-        return total % (10**9 + 7)
+        return (sum(x for _, x in sell_orders) + sum(x for _, x in buy_orders)) % (10**9 + 7)
