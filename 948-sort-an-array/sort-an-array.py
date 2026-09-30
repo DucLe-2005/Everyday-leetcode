@@ -19,8 +19,8 @@ class Solution:
         p = random.randint(lo, hi)
 
         # Move pivot to nums[lo]
-        # nums[lo], nums[p] = nums[p], nums[lo]
-        pivot = nums[p]
+        nums[lo], nums[p] = nums[p], nums[lo]
+        pivot = nums[lo]
 
         lt = lo
         i = lo
