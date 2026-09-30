@@ -26,11 +26,6 @@ class Solution:
         i = lo
         gt = hi
 
-        # Invariants:
-        # nums[lo:lt]      < pivot
-        # nums[lt:i]       = pivot
-        # nums[i:gt+1]     unclassified
-        # nums[gt+1:hi+1]  > pivot
         while i <= gt:
             if nums[i] < pivot:
                 nums[lt], nums[i] = nums[i], nums[lt]
