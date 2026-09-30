@@ -1,31 +1,47 @@
-class Solution:
-    def sortArray(self, nums: List[int]) -> List[int]:
-        def merge_sort(nums):
-            if len(nums) <= 1:
-                return nums
-            
-            m = len(nums) // 2
-            
-            left = merge_sort(nums[:m])
-            right = merge_sort(nums[m:])
+import random
 
-            return merge(left, right)
-        
-        def merge(nums1, nums2):
-            res = []
-            i, j = 0, 0
-            while i < len(nums1) and j < len(nums2):
-                if nums1[i] <= nums2[j]:
-                    res.append(nums1[i])
-                    i += 1
-                else:
-                    res.append(nums2[j])
-                    j += 1
-                
-            
-            res.extend(nums1[i:])
-            res.extend(nums2[j:])
-            
-            return res
-        
-        return merge_sort(nums)
+class Solution:
+    def sortArray(self, nums):
+        self.randomized_quicksort(nums, 0, len(nums) - 1)
+        return nums
+
+    def randomized_quicksort(self, nums, lo, hi):
+        if lo >= hi:
+            return
+
+        lt, gt = self.partition_three_way(nums, lo, hi)
+
+        # Equal region is already sorted
+        self.randomized_quicksort(nums, lo, lt - 1)
+        self.randomized_quicksort(nums, gt + 1, hi)
+
+    def partition_three_way(self, nums, lo, hi):
+        p = random.randint(lo, hi)
+
+        # Move pivot to nums[lo]
+        # nums[lo], nums[p] = nums[p], nums[lo]
+        pivot = nums[p]
+
+        lt = lo
+        i = lo
+        gt = hi
+
+        # Invariants:
+        # nums[lo:lt]      < pivot
+        # nums[lt:i]       = pivot
+        # nums[i:gt+1]     unclassified
+        # nums[gt+1:hi+1]  > pivot
+        while i <= gt:
+            if nums[i] < pivot:
+                nums[lt], nums[i] = nums[i], nums[lt]
+                lt += 1
+                i += 1
+
+            elif nums[i] > pivot:
+                nums[i], nums[gt] = nums[gt], nums[i]
+                gt -= 1
+
+            else:
+                i += 1
+
+        return lt, gt
