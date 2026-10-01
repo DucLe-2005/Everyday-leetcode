@@ -1,19 +1,15 @@
 class Solution:
     def findMiddleIndex(self, nums: list[int]) -> int:
-        n = len(nums)
-        left_prefix = [nums[0]]
-        for num in nums[1:]:
-            left_prefix.append(left_prefix[-1] + num)
+        prefix = [0]
+        for num in nums:
+            prefix.append(prefix[-1] + num)
         
-        right_prefix = [0] * (n)
-        right_prefix[-1] = nums[-1]
-        for i in range(n - 2, -1, -1):
-            right_prefix[i] = right_prefix[i+1] + nums[i]
-            
-        for i in range(n):
-            left_sum = left_prefix[i-1] if i - 1 >= 0 else 0
-            right_sum = right_prefix[i+1] if i + 1 < n else 0
+        for i in range(len(nums)):
+            left = prefix[i]
+            right = prefix[-1] - prefix[i+1]
 
-            if left_sum == right_sum:
+            if left == right:
                 return i
+        
         return -1
+
