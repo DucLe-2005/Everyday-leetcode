@@ -1,15 +1,15 @@
 class Solution:
     def waysToSplitArray(self, nums: list[int]) -> int:
-        if len(nums) < 2:
-            return 0
-
-        prefix = [nums[0]]
-        for num in nums[1:]:
-            prefix.append(prefix[-1] + num)
-        
+        left = 0 
+        right = sum(nums)
         res = 0
-        for i in range(len(prefix) - 1):
-            if prefix[i] >= prefix[-1] - prefix[i]:
+
+        for i in range(len(nums) - 1):
+            num = nums[i]
+            left += num
+            right -= num
+
+            if left >= right:
                 res += 1
         
         return res
