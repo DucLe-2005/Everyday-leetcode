@@ -32,7 +32,7 @@ class Solution:
         lower = lowerIndex()
         upper = upperIndex()
 
-        if lower < 0 or lower >= len(nums) or upper >= len(nums) or nums[lower] != target:
+        if lower == len(nums) or nums[lower] != target:
             return [-1, -1]
         
         return [lower, upper]
