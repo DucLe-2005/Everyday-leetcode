@@ -1,18 +1,19 @@
+import heapq
+
 class Solution:
     def maxSum(self, grid: List[List[int]], limits: List[int], k: int) -> int:
-        # time: O(m * nlogn + klog(sum(limits)))
-        largest = []
-        m, n = len(grid), len(grid[0])
-        for i in range(m):
-            row = [-x for x in grid[i]]
-            heapq.heapify(row)
+        if k == 0:
+            return 0
 
-            for _ in range(limits[i]):
-                largest.append(heapq.heappop(row))
+        min_heap = []
 
-        heapq.heapify(largest)
-        res = 0
-        for _ in range(k):
-            res += -heapq.heappop(largest)
+        for i, row in enumerate(grid):
+            row.sort(reverse=True)
 
-        return res
+            for num in row[:limits[i]]:
+                if len(min_heap) < k:
+                    heapq.heappush(min_heap, num)
+                elif num > min_heap[0]:
+                    heapq.heapreplace(min_heap, num)
+
+        return sum(min_heap)
