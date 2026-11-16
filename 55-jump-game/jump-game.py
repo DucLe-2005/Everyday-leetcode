@@ -1,12 +1,10 @@
 class Solution:
-    def canJump(self, nums: List[int]) -> bool:
-        # 1. Greedy: continuously update the farthest jumpable index
-        # time complexity: O(n), space complexity: O(1)
+    def canJump(self, nums: list[int]) -> bool:
         farthest = 0
-        for i in range(len(nums)):
+
+        for i, jump in enumerate(nums):
             if i > farthest:
                 return False
-            
-            farthest = max(farthest, i + nums[i])
+            farthest = max(farthest, i + jump)
 
         return True
